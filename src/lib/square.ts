@@ -34,6 +34,8 @@ declare global {
   }
 }
 
+type SquareSdk = NonNullable<Window["Square"]>;
+
 const SANDBOX_SCRIPT = "https://sandbox.web.squarecdn.com/v1/square.js";
 const PROD_SCRIPT = "https://web.squarecdn.com/v1/square.js";
 
@@ -54,7 +56,7 @@ export function getSquareConfig() {
 
 export function loadSquareSdk(
   environment: "sandbox" | "production",
-): Promise<NonNullable<typeof window.Square>> {
+): Promise<SquareSdk> {
   if (typeof window === "undefined") {
     return Promise.reject(new Error("Square SDK requires a browser."));
   }
@@ -66,7 +68,7 @@ export function loadSquareSdk(
   const src = environment === "production" ? PROD_SCRIPT : SANDBOX_SCRIPT;
   const existing = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`);
 
-  return new Promise<NonNullable<typeof window.Square>>((resolve, reject) => {
+  return new Promise<SquareSdk>((resolve, reject) => {
     const onReady = () => {
       if (window.Square) resolve(window.Square);
       else reject(new Error("Square SDK failed to load."));
