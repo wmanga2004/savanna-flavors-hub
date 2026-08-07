@@ -1,5 +1,4 @@
-import { ShoppingBag, Minus, Plus, Trash2, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { ShoppingBag, Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -13,35 +12,10 @@ import {
 } from "@/components/ui/sheet";
 import { useCart } from "@/components/cart-context";
 import { formatPrice } from "@/lib/products";
-import { createCheckoutSession } from "@/lib/checkout";
 import { Link } from "@tanstack/react-router";
-import { toast } from "sonner";
 
 export function CartDrawer({ children }: { children: React.ReactNode }) {
   const { items, removeItem, updateQuantity, subtotal, itemCount, clearCart } = useCart();
-  const [checkingOut, setCheckingOut] = useState(false);
-
-  const handleCheckout = async () => {
-    if (!items.length || checkingOut) return;
-    setCheckingOut(true);
-    try {
-      const result = await createCheckoutSession(
-        items.map((item) => ({
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-          productId: item.productId,
-        })),
-      );
-      clearCart();
-      window.location.href = result.checkoutUrl;
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Checkout failed. Please try again.";
-      toast.error(message);
-      setCheckingOut(false);
-    }
-  };
 
   return (
     <Sheet>
@@ -124,21 +98,15 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
                 <span className="font-display text-xl font-semibold">{formatPrice(subtotal)}</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                You&apos;ll complete payment securely with Square. Shipping address is collected at
-                checkout.
+                Checkout stays on Leavora. Enter shipping and pay with your card on the next page.
               </p>
               <SheetFooter className="flex-col gap-2 sm:flex-col">
-                <Button className="w-full gap-2" onClick={handleCheckout} disabled={checkingOut}>
-                  {checkingOut ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Redirecting…
-                    </>
-                  ) : (
-                    "Checkout with Square"
-                  )}
-                </Button>
-                <Button variant="outline" className="w-full" onClick={clearCart} disabled={checkingOut}>
+                <SheetClose asChild>
+                  <Link to="/checkout" className="w-full">
+                    <Button className="w-full">Checkout</Button>
+                  </Link>
+                </SheetClose>
+                <Button variant="outline" className="w-full" onClick={clearCart}>
                   Clear Cart
                 </Button>
               </SheetFooter>

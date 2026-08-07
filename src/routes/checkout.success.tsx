@@ -22,8 +22,8 @@ function CheckoutSuccessPage() {
         Payment received
       </h1>
       <p className="mt-4 max-w-md text-muted-foreground">
-        Square confirmed your checkout. We&apos;ll prepare your order and be in touch if we need
-        anything else.
+        Your payment went through on Leavora. We&apos;ll prepare your order and be in touch if we
+        need anything else.
       </p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link to="/products">
