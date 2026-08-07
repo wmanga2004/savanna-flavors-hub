@@ -1,3 +1,4 @@
+import type { Product } from "@/lib/products";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -199,7 +200,7 @@ function HomePage() {
           </Link>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {featuredProducts.map((product) => (
+          {featuredProducts.map((product: Product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
