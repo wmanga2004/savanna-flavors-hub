@@ -59,14 +59,6 @@ export function Footer() {
               Shop
             </Link>
             <a
-              href="https://facebook.com/leavoraafricanmarket_"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-primary"
-            >
-              Facebook
-            </a>
-            <a
               href="https://www.tiktok.com/@leavora.african.m"
               target="_blank"
               rel="noopener noreferrer"
