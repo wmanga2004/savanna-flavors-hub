@@ -58,6 +58,9 @@ export function Footer() {
             <Link to="/products" className="transition-colors hover:text-primary">
               Shop
             </Link>
+            <Link to="/admin/login" className="transition-colors hover:text-primary">
+              Staff
+            </Link>
             <a
               href="https://facebook.com/leavoraafricanmarket_"
               target="_blank"
