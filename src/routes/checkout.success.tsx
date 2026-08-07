@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/checkout/success")({
@@ -14,7 +15,29 @@ export const Route = createFileRoute("/checkout/success")({
   component: CheckoutSuccessPage,
 });
 
+type NotifyState = {
+  email?: { sent?: boolean; reason?: string; to?: string };
+  sms?: { sent?: boolean; reason?: string; to?: string };
+} | null;
+
 function CheckoutSuccessPage() {
+  const [notify, setNotify] = useState<NotifyState>(null);
+
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("leavora_seller_notify");
+      if (raw) {
+        setNotify(JSON.parse(raw) as NotifyState);
+        sessionStorage.removeItem("leavora_seller_notify");
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const smsFailed = notify && notify.sms?.sent === false;
+  const emailFailed = notify && notify.email?.sent === false;
+
   return (
     <div className="container mx-auto flex min-h-[60vh] flex-col items-center justify-center px-4 py-16 text-center">
       <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep">Thank you</p>
@@ -25,6 +48,23 @@ function CheckoutSuccessPage() {
         Your payment went through on Leavora. We&apos;ll prepare your order and be in touch if we
         need anything else.
       </p>
+
+      {(smsFailed || emailFailed) && (
+        <div className="mt-6 max-w-lg rounded-md border border-amber-500/40 bg-amber-500/10 p-4 text-left text-sm text-foreground">
+          <p className="font-medium">Store alert note (payment still succeeded)</p>
+          {smsFailed && (
+            <p className="mt-2 text-muted-foreground">
+              SMS: {notify?.sms?.reason || "not sent"}
+            </p>
+          )}
+          {emailFailed && (
+            <p className="mt-1 text-muted-foreground">
+              Email: {notify?.email?.reason || "not sent"}
+            </p>
+          )}
+        </div>
+      )}
+
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link to="/products">
           <Button size="lg">Continue shopping</Button>

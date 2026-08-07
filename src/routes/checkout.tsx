@@ -149,10 +149,18 @@ function CheckoutPage() {
       });
 
       clearCart();
-      toast.success("Payment successful");
+      toast.success("Payment successful — your card was charged.");
 
       const emailOk = payment.sellerNotify?.email?.sent;
       const smsOk = payment.sellerNotify?.sms?.sent;
+      try {
+        sessionStorage.setItem(
+          "leavora_seller_notify",
+          JSON.stringify(payment.sellerNotify ?? null),
+        );
+      } catch {
+        // ignore
+      }
       if (!emailOk || !smsOk) {
         const bits = [
           !emailOk
@@ -160,7 +168,10 @@ function CheckoutPage() {
             : null,
           !smsOk ? `SMS: ${payment.sellerNotify?.sms?.reason || "not sent"}` : null,
         ].filter(Boolean);
-        toast.warning(`Order paid, but seller alert issue — ${bits.join(" · ")}`);
+        toast.message("Seller alerts did not send", {
+          description: bits.join(" · "),
+          duration: 12000,
+        });
       }
 
       navigate({ to: "/checkout/success" });
