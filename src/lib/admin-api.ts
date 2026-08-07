@@ -89,18 +89,23 @@ async function invokeAdmin<T>(
   }
 
   const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
-  const response = await fetch(url.toString(), {
-    method: options.method || "POST",
-    headers: {
-      Authorization: `Bearer ${anon}`,
-      apikey: anon,
-      "Content-Type": "application/json",
-      ...headers,
-    },
-    body: options.body != null ? JSON.stringify(options.body) : undefined,
-  });
+  let response: Response;
+  try {
+    response = await fetch(url.toString(), {
+      method: options.method || "POST",
+      headers: {
+        Authorization: `Bearer ${anon}`,
+        apikey: anon,
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      body: options.body != null ? JSON.stringify(options.body) : undefined,
+    });
+  } catch {
+    throw new Error("Could not reach the admin API. Check your connection and try again.");
+  }
 
-  const payload = (await response.json()) as T & { error?: string };
+  const payload = (await response.json().catch(() => ({}))) as T & { error?: string };
   if (!response.ok) {
     throw new Error(payload.error || `Request failed (${response.status})`);
   }
