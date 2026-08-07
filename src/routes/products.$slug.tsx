@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { Minus, Plus, ShoppingBag, Star, Truck, ChefHat, Package } from "lucide-react";
+import { Minus, Plus, ShoppingBag, ExternalLink, MapPin, Package } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,14 +20,20 @@ export const Route = createFileRoute("/products/$slug")({
   head: ({ loaderData }) => ({
     meta: loaderData
       ? [
-          { title: `${loaderData.product.name} — AfriBites` },
+          { title: `${loaderData.product.name} — Leavora African Market` },
           { name: "description", content: loaderData.product.description },
-          { property: "og:title", content: `${loaderData.product.name} — AfriBites` },
+          {
+            property: "og:title",
+            content: `${loaderData.product.name} — Leavora African Market`,
+          },
           { property: "og:description", content: loaderData.product.description },
         ]
       : [
-          { title: "Product — AfriBites" },
-          { name: "description", content: "Shop authentic African food and ingredients." },
+          { title: "Product — Leavora African Market" },
+          {
+            name: "description",
+            content: "Shop authentic African groceries at Leavora African Market.",
+          },
         ],
   }),
   component: ProductDetailPage,
@@ -52,7 +58,7 @@ function ProductDetailPage() {
       unit: product.unit,
       quantity,
     });
-    toast.success(`Added ${quantity} ${product.unit}${quantity > 1 ? "s" : ""} to cart`);
+    toast.success(`Added ${quantity} × ${product.name} to cart`);
   };
 
   return (
@@ -61,11 +67,19 @@ function ProductDetailPage() {
         <Link to="/products" className="hover:text-foreground">
           Shop
         </Link>{" "}
+        /{" "}
+        <Link
+          to="/products"
+          search={{ category: product.category }}
+          className="hover:text-foreground"
+        >
+          {product.category}
+        </Link>{" "}
         / <span className="text-foreground">{product.name}</span>
       </div>
 
       <div className="grid gap-10 lg:grid-cols-2">
-        <div className="aspect-square overflow-hidden rounded-2xl bg-muted">
+        <div className="aspect-square overflow-hidden bg-muted">
           <img
             src={product.image}
             alt={product.name}
@@ -78,21 +92,16 @@ function ProductDetailPage() {
             <Badge variant="secondary" className="mb-3">
               {product.category}
             </Badge>
-            <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
+            <h1 className="font-display text-3xl font-medium text-foreground md:text-4xl">
               {product.name}
             </h1>
-            <div className="mt-3 flex items-center gap-2">
-              <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-accent text-accent" />
-                <span className="font-medium text-foreground">{product.rating}</span>
-              </div>
-              <span className="text-sm text-muted-foreground">({product.reviewCount} reviews)</span>
-            </div>
           </div>
 
-          <p className="font-display text-3xl font-semibold text-foreground">
+          <p className="font-display text-3xl font-medium text-foreground">
             {formatPrice(product.price)}
-            <span className="ml-2 text-base font-normal text-muted-foreground">/ {product.unit}</span>
+            <span className="ml-2 text-base font-normal text-muted-foreground">
+              / {product.unit}
+            </span>
           </p>
 
           <p className="leading-relaxed text-muted-foreground">{product.longDescription}</p>
@@ -107,8 +116,8 @@ function ProductDetailPage() {
 
           <Separator />
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-center rounded-md border border-border">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center border border-border">
               <button
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 className="px-3 py-2 text-muted-foreground transition-colors hover:text-foreground"
@@ -125,24 +134,28 @@ function ProductDetailPage() {
                 <Plus className="h-4 w-4" />
               </button>
             </div>
-            <Button onClick={handleAddToCart} className="flex-1 gap-2" size="lg">
+            <Button onClick={handleAddToCart} className="flex-1 gap-2 sm:flex-none" size="lg">
               <ShoppingBag className="h-5 w-5" />
               Add to Cart
             </Button>
+            {product.squareUrl && (
+              <Button asChild variant="outline" size="lg" className="gap-2">
+                <a href={product.squareUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-4 w-4" />
+                  Order on Square
+                </a>
+              </Button>
+            )}
           </div>
 
-          <div className="grid gap-4 rounded-xl border border-border/50 bg-card p-4 sm:grid-cols-3">
+          <div className="grid gap-4 border border-border/50 bg-card p-4 sm:grid-cols-2">
             <div className="flex items-center gap-3">
-              <Truck className="h-5 w-5 text-primary" />
-              <span className="text-sm text-muted-foreground">Nationwide shipping</span>
+              <MapPin className="h-5 w-5 text-primary" />
+              <span className="text-sm text-muted-foreground">In stock at OKC market</span>
             </div>
             <div className="flex items-center gap-3">
               <Package className="h-5 w-5 text-primary" />
-              <span className="text-sm text-muted-foreground">Fresh packaging</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <ChefHat className="h-5 w-5 text-primary" />
-              <span className="text-sm text-muted-foreground">Easy recipes included</span>
+              <span className="text-sm text-muted-foreground">Pickup or online order</span>
             </div>
           </div>
         </div>
@@ -150,12 +163,12 @@ function ProductDetailPage() {
 
       {relatedProducts.length > 0 && (
         <section className="mt-20">
-          <h2 className="mb-8 font-display text-2xl font-bold text-foreground">
-            You may also like
+          <h2 className="mb-8 font-display text-2xl font-medium text-foreground">
+            More from {product.category}
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {relatedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {relatedProducts.map((related) => (
+              <ProductCard key={related.id} product={related} />
             ))}
           </div>
         </section>

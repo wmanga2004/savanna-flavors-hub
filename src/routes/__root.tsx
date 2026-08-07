@@ -80,21 +80,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AfriBites — Authentic African Food & Ingredients" },
-      { name: "description", content: "Shop authentic African meal kits, spices, snacks, and ingredients delivered to your door." },
-      { name: "author", content: "AfriBites" },
-      { property: "og:title", content: "AfriBites — Authentic African Food & Ingredients" },
-      { property: "og:description", content: "Shop authentic African meal kits, spices, snacks, and ingredients delivered to your door." },
+      { title: "Leavora African Market | Authentic Groceries & Community Market" },
+      {
+        name: "description",
+        content:
+          "Authentic African groceries, spices, produce, and prepared foods in Oklahoma City.",
+      },
+      { name: "author", content: "Leavora African Market" },
+      {
+        property: "og:title",
+        content: "Leavora African Market | Authentic Groceries & Community Market",
+      },
+      {
+        property: "og:description",
+        content:
+          "Authentic African groceries, spices, produce, and prepared foods in Oklahoma City.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@AfriBites" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/images/logo-mark.png", type: "image/png" },
       {
         rel: "preconnect",
         href: "https://fonts.googleapis.com",
@@ -106,7 +116,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Fira+Sans:wght@300;400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600;700&display=swap",
       },
     ],
   }),

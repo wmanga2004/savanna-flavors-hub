@@ -1,131 +1,171 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ChefHat, Leaf, Truck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/lib/products";
+import { products, SQUARE_SHOP_URL, CATEGORIES } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AfriBites — Authentic African Food & Ingredients" },
+      { title: "Leavora African Market | Authentic Groceries & Community Market" },
       {
         name: "description",
         content:
-          "Discover meal kits, spices, snacks, and ingredients from across Africa. Delivered fresh to your door.",
+          "Leavora African Market — authentic African groceries, spices, produce and prepared foods in Oklahoma City.",
       },
       {
         property: "og:title",
-        content: "AfriBites — Authentic African Food & Ingredients",
+        content: "Leavora African Market | Authentic Groceries & Community Market",
       },
       {
         property: "og:description",
         content:
-          "Discover meal kits, spices, snacks, and ingredients from across Africa. Delivered fresh to your door.",
+          "Fresh produce, staple grains, spices, and the flavors of home — gathered from the motherland and shared across every aisle.",
       },
     ],
   }),
   component: HomePage,
 });
 
-const featuredProducts = products.slice(0, 4);
+const featuredProducts = products.filter((p) =>
+  ["egusi-seeds", "ola-ola-pounded-yam-10lb", "njangsang", "malta"].includes(p.slug),
+);
+
+const departmentBlurb: Record<string, string> = {
+  "Fresh Produce": "Fresh yam, okongobong, African plum, and boiled corn.",
+  "Spices & Seasonings": "Njangsang, egusi, crayfish, mambo, and maggi.",
+  "Grains & Pounded Yam": "Ola Ola pounded yam, plantain fufu, and garri.",
+  "Prepared & Frozen": "Bitter leaves, eru, dry fish, and snails.",
+  "Oils & Pantry": "Carotino, Praise palm oil, and pantry staples.",
+  "Beverages & Specialty": "Peak milk, Ovaltine, Nido, Tartina, and Malta.",
+};
 
 function HomePage() {
   return (
     <div className="flex flex-col">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-background">
-        <div className="container mx-auto px-4 py-16 md:px-6 md:py-24 lg:py-32">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <div className="flex flex-col items-start gap-6">
-              <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-                Now shipping nationwide
-              </span>
-              <h1 className="font-display text-4xl font-bold leading-tight text-foreground md:text-5xl lg:text-6xl">
-                Taste Africa, <span className="text-primary">delivered home</span>
-              </h1>
-              <p className="max-w-lg text-lg leading-relaxed text-muted-foreground">
-                Meal kits, spices, and snacks from across the continent — made simple for your
-                kitchen. Cook jollof, egusi, suya, and more with authentic ingredients.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link to="/products">
-                  <Button size="lg" className="gap-2">
-                    Shop Now <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link to="/about">
-                  <Button size="lg" variant="outline">
-                    Our Story
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
-                <img
-                  src="/images/hero.jpg"
-                  alt="Vibrant spread of authentic African dishes"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-6 -left-6 hidden rounded-xl bg-card p-4 shadow-lg md:block">
-                <p className="font-display text-2xl font-bold text-primary">4.9</p>
-                <p className="text-sm text-muted-foreground">Average rating</p>
-              </div>
-            </div>
+      {/* Full-bleed hero */}
+      <section className="relative min-h-[88vh] w-full overflow-hidden bg-espresso">
+        <img
+          src="/images/hero.jpg"
+          alt="Shelves stocked with African market staples: oils, spices, gari, egusi, fresh produce, and plantains"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/55 to-espresso/25" />
+        <div className="relative z-10 flex min-h-[88vh] flex-col justify-end px-4 pb-16 pt-28 md:px-10 md:pb-20 lg:px-16">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary animate-in fade-in duration-700">
+            Authentic African Grocery & Market
+          </p>
+          <h1 className="mt-4 max-w-3xl font-display text-4xl font-medium leading-[1.05] text-background md:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            Rooted in Heritage.
+            <br />
+            Grown for Community.
+          </h1>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-background/80 md:text-lg animate-in fade-in slide-in-from-bottom-2 duration-1000 delay-150">
+            Fresh produce, staple grains, spices, and the flavors of home — gathered from the
+            motherland and shared across every aisle.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3 animate-in fade-in duration-1000 delay-300">
+            <Link to="/products">
+              <Button
+                size="lg"
+                className="gap-2 bg-background text-foreground hover:bg-background/90"
+              >
+                Explore the Market <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <a href={SQUARE_SHOP_URL} target="_blank" rel="noopener noreferrer">
+              <Button size="lg" className="gap-2 bg-primary text-espresso hover:bg-gold-deep hover:text-background">
+                Order Online <ArrowRight className="h-4 w-4" />
+              </Button>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="border-y border-border/50 bg-muted/30">
-        <div className="container mx-auto px-4 py-12 md:px-6">
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="flex flex-col items-center text-center">
-              <div className="rounded-full bg-primary/10 p-3 text-primary">
-                <ChefHat className="h-6 w-6" />
-              </div>
-              <h3 className="mt-4 font-display text-lg font-semibold">Curated Meal Kits</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Pre-measured ingredients and step-by-step guides for iconic African dishes.
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="rounded-full bg-secondary/20 p-3 text-secondary-foreground">
-                <Leaf className="h-6 w-6" />
-              </div>
-              <h3 className="mt-4 font-display text-lg font-semibold">Authentic Sourcing</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                We partner with trusted suppliers to bring you genuine spices and staples.
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="rounded-full bg-accent/20 p-3 text-accent-foreground">
-                <Truck className="h-6 w-6" />
-              </div>
-              <h3 className="mt-4 font-display text-lg font-semibold">Nationwide Delivery</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Fresh, carefully packed, and shipped straight to your doorstep.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
+      {/* Intro */}
       <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
-        <div className="mb-10 flex items-end justify-between">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="aspect-[4/3] overflow-hidden">
+            <img
+              src="/images/intro-feast.jpg"
+              alt="A shared table of jollof rice, grilled fish, fufu, plantains, and stews"
+              className="h-full w-full object-cover"
+            />
+          </div>
           <div>
-            <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep">
+              Home, In Every Aisle
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-medium text-foreground md:text-4xl">
+              Leavora, where community gathers
+            </h2>
+            <p className="mt-5 text-muted-foreground leading-relaxed">
+              Leavora African Market was built on a simple idea: that a grocery run should feel like
+              coming home. Every shelf carries the staples of the diaspora — the grains, spices, and
+              produce that turn a house into a home-cooked meal.
+            </p>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              We source with care, keep our prices honest, and greet every customer like family. This
+              isn&apos;t just where the community shops. It&apos;s where it gathers.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Departments */}
+      <section className="bg-espresso py-16 text-background md:py-20">
+        <div className="container mx-auto px-4 md:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">What We Offer</p>
+          <h2 className="mt-3 font-display text-3xl font-medium uppercase tracking-wide md:text-4xl">
+            Flavors that carry home
+          </h2>
+          <p className="mt-4 max-w-2xl text-background/70">
+            From market staples to hard-to-find imports, every department is stocked with the
+            ingredients that make a dish taste like it should.
+          </p>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {CATEGORIES.map((category, i) => (
+              <Link
+                key={category}
+                to="/products"
+                search={{ category }}
+                className="group border border-background/15 p-6 transition-colors hover:border-primary hover:bg-background/5"
+              >
+                <span className="font-display text-sm text-primary">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-3 font-display text-xl font-medium">{category}</h3>
+                <p className="mt-2 text-sm text-background/65">{departmentBlurb[category]}</p>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-10">
+            <Link to="/products">
+              <Button
+                size="lg"
+                className="gap-2 bg-background text-foreground hover:bg-background/90"
+              >
+                View Full Shop <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured */}
+      <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
+        <div className="mb-10 flex items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep">
+              From the Shelves
+            </p>
+            <h2 className="mt-2 font-display text-3xl font-medium text-foreground md:text-4xl">
               Customer Favorites
             </h2>
-            <p className="mt-2 text-muted-foreground">
-              Our most-loved African meal kits and ingredients.
-            </p>
           </div>
           <Link
             to="/products"
-            className="hidden items-center gap-1 text-sm font-medium text-primary hover:underline md:flex"
+            className="hidden items-center gap-1 text-sm font-semibold text-gold-deep hover:underline md:flex"
           >
             View all <ArrowRight className="h-4 w-4" />
           </Link>
@@ -135,39 +175,33 @@ function HomePage() {
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        <div className="mt-8 flex justify-center md:hidden">
-          <Link to="/products">
-            <Button variant="outline">View all products</Button>
-          </Link>
-        </div>
       </section>
 
-      {/* Story teaser */}
-      <section className="bg-sage/10 py-16 md:py-24">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid items-center gap-10 lg:grid-cols-2">
-            <div className="aspect-[4/3] overflow-hidden rounded-2xl">
-              <img
-                src="/images/plantains.jpg"
-                alt="Fresh ripe plantains"
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="flex flex-col gap-6">
-              <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl">
-                From our kitchen to yours
-              </h2>
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                AfriBites was born from a simple idea: everyone should be able to enjoy the rich,
-                diverse flavors of Africa at home. We source the hardest-to-find ingredients and
-                package them into easy-to-follow kits.
-              </p>
-              <Link to="/about">
-                <Button variant="outline" size="lg" className="w-fit gap-2">
-                  Read our story <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
+      {/* Mission break */}
+      <section className="relative overflow-hidden py-24 md:py-32">
+        <img
+          src="/images/products/crayfish.jpg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-espresso/80" />
+        <div className="relative z-10 container mx-auto px-4 text-center md:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+            More Than a Market
+          </p>
+          <h2 className="mx-auto mt-4 max-w-2xl font-display text-3xl font-medium uppercase tracking-wide text-background md:text-5xl">
+            Where the community gathers
+          </h2>
+          <p className="mx-auto mt-5 max-w-xl text-background/75">
+            Like the dove and the olive branch on our sign, Leavora stands for peace, abundance, and
+            homecoming.
+          </p>
+          <div className="mt-8">
+            <Link to="/about">
+              <Button size="lg" className="bg-background text-foreground hover:bg-background/90">
+                Visit Us
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

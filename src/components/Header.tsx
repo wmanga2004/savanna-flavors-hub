@@ -1,15 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { ShoppingBag, Menu } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "@/components/cart-context";
 import { CartDrawer } from "@/components/CartDrawer";
+import { SQUARE_SHOP_URL } from "@/lib/products";
 
 const navLinks = [
   { to: "/", label: "Home" },
   { to: "/products", label: "Shop" },
-  { to: "/about", label: "About" },
+  { to: "/about", label: "Visit Us" },
 ];
 
 export function Header() {
@@ -17,33 +18,51 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="font-display text-2xl font-bold tracking-tight text-foreground">
-            Afri<span className="text-primary">Bites</span>
+    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:h-[4.5rem] md:px-6">
+        <Link to="/" className="flex items-center gap-2.5">
+          <img
+            src="/images/logo-mark.png"
+            alt=""
+            className="h-10 w-auto object-contain"
+          />
+          <span className="flex flex-col leading-none">
+            <span className="font-display text-xl font-medium tracking-tight text-foreground md:text-2xl">
+              Leavora
+            </span>
+            <span className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-gold-deep">
+              African Market
+            </span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.to}
               to={link.to}
-              activeProps={{ className: "text-primary font-medium" }}
+              activeProps={{ className: "text-foreground font-semibold" }}
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {link.label}
             </Link>
           ))}
+          <a
+            href={SQUARE_SHOP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-sm bg-primary px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-gold-deep hover:text-background"
+          >
+            Order Online
+          </a>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <CartDrawer>
             <Button variant="ghost" size="icon" className="relative" aria-label="Open cart">
               <ShoppingBag className="h-5 w-5" />
               {itemCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-espresso text-[10px] font-bold text-background">
                   {itemCount > 9 ? "9+" : itemCount}
                 </span>
               )}
@@ -68,6 +87,15 @@ export function Header() {
                     {link.label}
                   </Link>
                 ))}
+                <a
+                  href={SQUARE_SHOP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileOpen(false)}
+                  className="font-display text-2xl font-medium text-primary"
+                >
+                  Order Online
+                </a>
               </div>
             </SheetContent>
           </Sheet>

@@ -1,23 +1,24 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Heart, Globe, Users } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { SQUARE_SHOP_URL } from "@/lib/products";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About AfriBites — Our Story" },
+      { title: "Visit Us — Leavora African Market" },
       {
         name: "description",
         content:
-          "Learn how AfriBites brings authentic African ingredients and meal kits to kitchens across the country.",
+          "Visit Leavora African Market at 16405 Drywater Dr, Oklahoma City. Hours, phone, and our story.",
       },
       {
         property: "og:title",
-        content: "About AfriBites — Our Story",
+        content: "Visit Us — Leavora African Market",
       },
       {
         property: "og:description",
         content:
-          "Learn how AfriBites brings authentic African ingredients and meal kits to kitchens across the country.",
+          "Hospitality that feels like home. Visit our Oklahoma City African grocery and community market.",
       },
     ],
   }),
@@ -27,85 +28,97 @@ export const Route = createFileRoute("/about")({
 function AboutPage() {
   return (
     <div className="flex flex-col">
-      <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="font-display text-4xl font-bold text-foreground md:text-5xl">
-            Our Story
+      <section className="relative min-h-[50vh] overflow-hidden bg-espresso">
+        <img
+          src="/images/intro-feast.jpg"
+          alt="Shared table of African dishes at Leavora"
+          className="absolute inset-0 h-full w-full object-cover opacity-60"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/50 to-transparent" />
+        <div className="relative z-10 flex min-h-[50vh] flex-col justify-end px-4 pb-12 md:px-10 lg:px-16">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Our Story</p>
+          <h1 className="mt-3 max-w-3xl font-display text-4xl font-medium text-background md:text-5xl">
+            Hospitality that feels like home
           </h1>
-          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            AfriBites was created to share the richness of African cuisine with everyone. From the
-            smoky jollof rice of Nigeria to the fragrant tagines of North Africa, our continent's
-            food is as diverse as its people — and we believe it deserves a place at every table.
+        </div>
+      </section>
+
+      <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
+        <div className="mx-auto max-w-3xl space-y-5 text-lg leading-relaxed text-muted-foreground">
+          <p>
+            Leavora was founded to close the distance between the diaspora and the ingredients of
+            home. What started as a single shelf of hard-to-find staples has grown into a full market
+            — one built on trust, quality, and community.
+          </p>
+          <p>
+            Every detail, from our name to the dove on our sign, points back to the same idea: peace,
+            abundance, and a place to belong.
           </p>
         </div>
-      </section>
 
-      <section className="bg-muted/30 py-16 md:py-24">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="flex flex-col items-center rounded-xl bg-card p-8 text-center shadow-sm">
-              <div className="rounded-full bg-primary/10 p-3 text-primary">
-                <Heart className="h-6 w-6" />
-              </div>
-              <h3 className="mt-4 font-display text-xl font-semibold">Made with love</h3>
-              <p className="mt-2 text-muted-foreground">
-                Every kit is curated by people who grew up cooking these dishes. We don't cut
-                corners on flavor.
-              </p>
-            </div>
-            <div className="flex flex-col items-center rounded-xl bg-card p-8 text-center shadow-sm">
-              <div className="rounded-full bg-secondary/20 p-3 text-secondary-foreground">
-                <Globe className="h-6 w-6" />
-              </div>
-              <h3 className="mt-4 font-display text-xl font-semibold">Sourced responsibly</h3>
-              <p className="mt-2 text-muted-foreground">
-                We work directly with importers and producers to ensure authenticity, freshness, and
-                fair practices.
-              </p>
-            </div>
-            <div className="flex flex-col items-center rounded-xl bg-card p-8 text-center shadow-sm">
-              <div className="rounded-full bg-accent/20 p-3 text-accent-foreground">
-                <Users className="h-6 w-6" />
-              </div>
-              <h3 className="mt-4 font-display text-xl font-semibold">Built for community</h3>
-              <p className="mt-2 text-muted-foreground">
-                Food brings people together. Our recipes are designed to be shared with family and
-                friends.
-              </p>
-            </div>
+        <div className="mx-auto mt-14 grid max-w-3xl gap-8 sm:grid-cols-3">
+          <div className="border-t border-primary pt-4">
+            <p className="font-display text-4xl font-medium text-foreground">250+</p>
+            <p className="mt-1 text-sm text-muted-foreground">Authentic Products</p>
+          </div>
+          <div className="border-t border-primary pt-4">
+            <p className="font-display text-4xl font-medium text-foreground">15+</p>
+            <p className="mt-1 text-sm text-muted-foreground">Countries Represented</p>
+          </div>
+          <div className="border-t border-primary pt-4">
+            <p className="font-display text-4xl font-medium text-foreground">1</p>
+            <p className="mt-1 text-sm text-muted-foreground">Community, Always</p>
           </div>
         </div>
       </section>
 
-      <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="aspect-[4/3] overflow-hidden rounded-2xl">
-            <img
-              src="/images/hero.jpg"
-              alt="African food spread"
-              className="h-full w-full object-cover"
-            />
-          </div>
+      <section className="bg-muted/50 py-16 md:py-20">
+        <div className="container mx-auto grid gap-10 px-4 md:px-6 lg:grid-cols-2">
           <div>
-            <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl">
-              Why African food?
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep">Visit</p>
+            <h2 className="mt-3 font-display text-3xl font-medium text-foreground">
+              Come see us in Oklahoma City
             </h2>
-            <div className="mt-6 space-y-4 text-muted-foreground">
+            <div className="mt-8 space-y-5 text-muted-foreground">
               <p>
-                African cuisine is built on bold spices, fresh produce, centuries-old techniques, and
-                a deep sense of hospitality. Every region has its own signature dishes, from the
-                pepper soups of West Africa to the injera and stews of the Horn.
+                <strong className="text-foreground">Address</strong>
+                <br />
+                16405 Drywater Dr
+                <br />
+                Oklahoma City, OK 73170
               </p>
               <p>
-                Yet too often, these ingredients are hard to find in one place. AfriBites exists to
-                change that — by putting everything you need in one box, with clear instructions that
-                honor tradition while fitting modern life.
+                <strong className="text-foreground">Hours</strong>
+                <br />
+                Mon – Sat: 9:00 AM – 8:00 PM
+                <br />
+                Sunday: 10:00 AM – 6:00 PM
               </p>
               <p>
-                Whether you're reconnecting with heritage or exploring something new, we're here to
-                make every meal memorable.
+                <strong className="text-foreground">Phone</strong>
+                <br />
+                <a href="tel:+14054762965" className="hover:text-foreground">
+                  (405) 476-2965
+                </a>
               </p>
             </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href={SQUARE_SHOP_URL} target="_blank" rel="noopener noreferrer">
+                <Button size="lg">Order Online</Button>
+              </a>
+              <Link to="/products">
+                <Button size="lg" variant="outline">
+                  Browse Shop
+                </Button>
+              </Link>
+            </div>
+          </div>
+          <div className="aspect-[4/3] overflow-hidden bg-muted">
+            <img
+              src="/images/shop-hero.jpg"
+              alt="Inside Leavora African Market"
+              className="h-full w-full object-cover"
+            />
           </div>
         </div>
       </section>

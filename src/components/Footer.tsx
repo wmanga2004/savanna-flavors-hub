@@ -1,92 +1,87 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Twitter, Facebook, Mail } from "lucide-react";
+import { SQUARE_SHOP_URL } from "@/lib/products";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/50 bg-background">
-      <div className="container mx-auto px-4 py-12 md:px-6">
-        <div className="grid gap-8 md:grid-cols-4">
-          <div className="md:col-span-2">
-            <Link to="/" className="inline-block">
-              <span className="font-display text-2xl font-bold tracking-tight text-foreground">
-                Afri<span className="text-primary">Bites</span>
-              </span>
-            </Link>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Authentic African ingredients, meal kits, and snacks delivered to your door. Taste the
-              continent, one bite at a time.
+    <footer className="bg-espresso text-background">
+      <div className="container mx-auto px-4 py-14 md:px-6 md:py-16">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Visit Us</p>
+        <h2 className="mt-3 font-display text-3xl font-medium uppercase tracking-wide md:text-4xl">
+          A meeting point, naturally
+        </h2>
+
+        <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <h5 className="text-sm font-semibold uppercase tracking-[0.14em] text-primary">Hours</h5>
+            <p className="mt-3 text-sm leading-relaxed text-background/75">
+              Mon – Sat: 9:00 AM – 8:00 PM
+              <br />
+              Sunday: 10:00 AM – 6:00 PM
             </p>
           </div>
-
           <div>
-            <h4 className="font-display font-semibold text-foreground">Shop</h4>
-            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li>
-                <Link to="/products" className="transition-colors hover:text-foreground">
-                  All Products
-                </Link>
-              </li>
-              <li>
-                <Link to="/products" className="transition-colors hover:text-foreground">
-                  Meal Kits
-                </Link>
-              </li>
-              <li>
-                <Link to="/products" className="transition-colors hover:text-foreground">
-                  Spices
-                </Link>
-              </li>
-              <li>
-                <Link to="/products" className="transition-colors hover:text-foreground">
-                  Snacks
-                </Link>
-              </li>
-            </ul>
+            <h5 className="text-sm font-semibold uppercase tracking-[0.14em] text-primary">Phone</h5>
+            <p className="mt-3 text-sm">
+              <a href="tel:+14054762965" className="text-background/75 transition-colors hover:text-primary">
+                (405) 476-2965
+              </a>
+            </p>
           </div>
-
           <div>
-            <h4 className="font-display font-semibold text-foreground">Connect</h4>
-            <div className="mt-4 flex gap-4">
+            <h5 className="text-sm font-semibold uppercase tracking-[0.14em] text-primary">Address</h5>
+            <p className="mt-3 text-sm leading-relaxed text-background/75">
+              16405 Drywater Dr
+              <br />
+              Oklahoma City, OK 73170
+            </p>
+          </div>
+          <div>
+            <h5 className="text-sm font-semibold uppercase tracking-[0.14em] text-primary">Email</h5>
+            <p className="mt-3 text-sm">
               <a
-                href="#"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Instagram"
+                href="mailto:hello@leavoramarket.com"
+                className="text-background/75 transition-colors hover:text-primary"
               >
-                <Instagram className="h-5 w-5" />
+                hello@leavoramarket.com
               </a>
-              <a
-                href="#"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a
-                href="mailto:hello@afribites.com"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Email"
-              >
-                <Mail className="h-5 w-5" />
-              </a>
-            </div>
+            </p>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-8 text-sm text-muted-foreground md:flex-row">
-          <p>&copy; {new Date().getFullYear()} AfriBites. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a href="#" className="transition-colors hover:text-foreground">
-              Privacy Policy
+        <div className="mt-12 flex flex-col items-start justify-between gap-6 border-t border-background/15 pt-8 text-sm text-background/60 md:flex-row md:items-center">
+          <div className="flex flex-col gap-2">
+            <Link to="/" className="font-display text-lg text-background hover:text-primary">
+              Leavora African Market
+            </Link>
+            <p>&copy; {new Date().getFullYear()} Leavora African Market. All rights reserved.</p>
+          </div>
+          <div className="flex flex-wrap gap-6">
+            <Link to="/products" className="transition-colors hover:text-primary">
+              Shop
+            </Link>
+            <a
+              href={SQUARE_SHOP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              Order Online
             </a>
-            <a href="#" className="transition-colors hover:text-foreground">
-              Terms of Service
+            <a
+              href="https://facebook.com/leavoraafricanmarket_"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              Facebook
+            </a>
+            <a
+              href="https://tiktok.com/@leavora_okc"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              TikTok
             </a>
           </div>
         </div>
