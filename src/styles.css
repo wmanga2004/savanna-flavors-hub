@@ -232,3 +232,15 @@
     transition: none !important;
   }
 }
+
+/* Hide Lovable "Edit with Lovable" badge on the live storefront */
+a[href*="lovable.dev"][style*="position: fixed"],
+a[href*="lovable.dev"][style*="position:fixed"],
+#lovable-badge,
+[data-lovable-badge],
+iframe[src*="lovable.dev/badge"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}

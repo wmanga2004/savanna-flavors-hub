@@ -118,7 +118,8 @@ function HomePage() {
             Inside Leavora
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Hover a card to fan it open.
+            <span className="hidden md:inline">Hover a card to fan it open.</span>
+            <span className="md:hidden">Swipe the cards or use the arrows.</span>
           </p>
         </div>
         <SocialCards cards={galleryCards} />

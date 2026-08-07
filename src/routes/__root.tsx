@@ -15,6 +15,7 @@ import { CartProvider } from "@/components/cart-context";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { HideLovableBadge } from "@/components/HideLovableBadge";
 
 function NotFoundComponent() {
   return (
@@ -168,6 +169,7 @@ function RootComponent() {
           {!isAdmin && <Footer />}
         </div>
         <Toaster position="bottom-right" richColors />
+        <HideLovableBadge />
       </CartProvider>
     </QueryClientProvider>
   );

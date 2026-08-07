@@ -125,6 +125,12 @@ export default function SocialCards({ cards }: SocialCardsProps) {
 
     if (isFirstMount) isAnimating.current = true;
 
+    const isCoarsePointer =
+      typeof window !== "undefined" &&
+      window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    const settleEase = isCoarsePointer ? "power2.out" : "elastic.out(1.05,.78)";
+    const settleDuration = isCoarsePointer ? 0.55 : 1.2;
+
     let completedCount = 0;
     const visibleCount = visibleMap.size;
     const onCardDone = () => {
@@ -153,9 +159,9 @@ export default function SocialCards({ cards }: SocialCardsProps) {
           gsap.set(card, { x: 0, y: `${12 * hMult}rem`, rotation: 0, scale: 0.5, opacity: 0 });
           gsap.to(card, {
             ...target,
-            duration: 1.2,
-            ease: "elastic.out(1.05,.78)",
-            delay: 0.2 + slot * 0.06,
+            duration: settleDuration,
+            ease: settleEase,
+            delay: 0.15 + slot * 0.04,
             onComplete: onCardDone,
           });
         } else if (!wasVisible) {
@@ -167,9 +173,9 @@ export default function SocialCards({ cards }: SocialCardsProps) {
             scale: 0.5,
             opacity: 0,
           });
-          gsap.to(card, { ...target, duration: 0.6, ease: "power2.out", onComplete: onCardDone });
+          gsap.to(card, { ...target, duration: 0.45, ease: "power2.out", onComplete: onCardDone });
         } else {
-          gsap.to(card, { ...target, duration: 0.5, ease: "power2.out", onComplete: onCardDone });
+          gsap.to(card, { ...target, duration: 0.4, ease: "power2.out", onComplete: onCardDone });
         }
       } else if (wasVisible) {
         const exitX = direction === "right" ? -40 : 40;
@@ -178,7 +184,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
           opacity: 0,
           scale: 0.5,
           rotation: direction === "right" ? -30 : 30,
-          duration: 0.4,
+          duration: 0.35,
           ease: "power2.in",
           zIndex: 0,
         });
@@ -201,6 +207,9 @@ export default function SocialCards({ cards }: SocialCardsProps) {
     const centerSlot = visibleEntries.length >> 1;
 
     const updateHoverLayout = (hoveredSlot: number | null) => {
+      // Phones don't hover — skip the elastic fan so swipes stay smooth
+      if (isCoarsePointer) return;
+
       const mult = getResponsiveMultiplier(window.innerWidth);
       const hM = getHeightMultiplier(window.innerWidth);
 
@@ -244,40 +253,68 @@ export default function SocialCards({ cards }: SocialCardsProps) {
           y: `${targetY}rem`,
           rotation: targetRot,
           scale: targetScale,
-          duration: 0.5,
+          duration: 0.45,
           delay,
-          ease: "elastic.out(1,.75)",
+          ease: "power2.out",
           overwrite: "auto",
         });
         gsap.set(el, { zIndex: base.zIndex });
       });
     };
 
-    const enterHandlers = visibleEntries.map(({ el, slot }) => {
-      const handler = () => {
-        if (isAnimating.current) return;
-        if (leaveTimer) {
-          clearTimeout(leaveTimer);
-          leaveTimer = null;
-        }
-        if (activeSlot !== slot) {
-          activeSlot = slot;
-          updateHoverLayout(slot);
-        }
-      };
-      el.addEventListener("mouseenter", handler);
-      return { el, handler };
-    });
+    const enterHandlers = isCoarsePointer
+      ? []
+      : visibleEntries.map(({ el, slot }) => {
+          const handler = () => {
+            if (isAnimating.current) return;
+            if (leaveTimer) {
+              clearTimeout(leaveTimer);
+              leaveTimer = null;
+            }
+            if (activeSlot !== slot) {
+              activeSlot = slot;
+              updateHoverLayout(slot);
+            }
+          };
+          el.addEventListener("pointerenter", handler);
+          return { el, handler };
+        });
 
     const onMouseLeave = () => {
-      if (isAnimating.current) return;
+      if (isCoarsePointer || isAnimating.current) return;
       if (leaveTimer) clearTimeout(leaveTimer);
       leaveTimer = setTimeout(() => {
         activeSlot = null;
         updateHoverLayout(null);
       }, 50);
     };
-    container.addEventListener("mouseleave", onMouseLeave);
+    if (!isCoarsePointer) {
+      container.addEventListener("pointerleave", onMouseLeave);
+    }
+
+    // Touch / trackpad swipe to cycle cards
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let swiping = false;
+    const onPointerDown = (e: PointerEvent) => {
+      if (!needsPagination || e.pointerType === "mouse") return;
+      touchStartX = e.clientX;
+      touchStartY = e.clientY;
+      swiping = true;
+    };
+    const onPointerUp = (e: PointerEvent) => {
+      if (!swiping) return;
+      swiping = false;
+      const dx = e.clientX - touchStartX;
+      const dy = e.clientY - touchStartY;
+      if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+      cycle(dx < 0 ? "right" : "left");
+    };
+    container.addEventListener("pointerdown", onPointerDown);
+    container.addEventListener("pointerup", onPointerUp);
+    container.addEventListener("pointercancel", () => {
+      swiping = false;
+    });
 
     const onResize = () => {
       if (!isAnimating.current) updateHoverLayout(activeSlot);
@@ -285,12 +322,14 @@ export default function SocialCards({ cards }: SocialCardsProps) {
     window.addEventListener("resize", onResize);
 
     return () => {
-      enterHandlers.forEach(({ el, handler }) => el.removeEventListener("mouseenter", handler));
-      container.removeEventListener("mouseleave", onMouseLeave);
+      enterHandlers.forEach(({ el, handler }) => el.removeEventListener("pointerenter", handler));
+      container.removeEventListener("pointerleave", onMouseLeave);
+      container.removeEventListener("pointerdown", onPointerDown);
+      container.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("resize", onResize);
       if (leaveTimer) clearTimeout(leaveTimer);
     };
-  }, [centerIndex, totalCards, getVisibleMap, needsPagination]);
+  }, [centerIndex, totalCards, getVisibleMap, needsPagination, cycle]);
 
   if (!totalCards) return null;
 
@@ -322,7 +361,8 @@ export default function SocialCards({ cards }: SocialCardsProps) {
                   src={card.imgUrl}
                   loading="lazy"
                   alt={card.alt || `Card ${index}`}
-                  className="absolute inset-0 z-10 h-full w-full object-cover"
+                  className="pointer-events-none absolute inset-0 z-10 h-full w-full object-cover"
+                  draggable={false}
                 />
               </div>
             );
@@ -332,12 +372,18 @@ export default function SocialCards({ cards }: SocialCardsProps) {
                 href={card.linkUrl}
                 target={card.linkUrl.startsWith("http") ? "_blank" : "_self"}
                 rel="noopener noreferrer"
-                className="fan-card block cursor-pointer"
+                className="fan-card block cursor-pointer touch-pan-y"
+                onClick={(e) => {
+                  // On touch devices, prefer swipe/arrows over accidental link taps mid-swipe
+                  if (window.matchMedia("(pointer: coarse)").matches && needsPagination) {
+                    e.preventDefault();
+                  }
+                }}
               >
                 {image}
               </a>
             ) : (
-              <div key={index} className="fan-card">
+              <div key={index} className="fan-card touch-pan-y">
                 {image}
               </div>
             );
