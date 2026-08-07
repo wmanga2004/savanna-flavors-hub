@@ -111,28 +111,6 @@ function HomePage() {
     <div className="flex flex-col">
       <HeroSection />
 
-      {/* Gallery fan — right under the hero so visitors see it first */}
-      <section className="overflow-hidden bg-muted/40 py-10 md:py-14">
-        <div className="container mx-auto px-4 text-center md:px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep">Gallery</p>
-          <h2 className="mt-3 font-display text-3xl font-medium text-foreground md:text-4xl">
-            Inside Leavora
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Hover a card to fan it open — a look at our aisles, staples, and the everyday moments
-            that make this a gathering place.
-          </p>
-        </div>
-        <SocialCards cards={galleryCards} />
-        <div className="mt-4 flex justify-center">
-          <Link to="/about">
-            <Button variant="outline" size="lg" className="gap-2">
-              Visit the Market <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      </section>
-
       {/* Intro */}
       <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
@@ -228,33 +206,17 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Mission break */}
-      <section className="relative overflow-hidden py-24 md:py-32">
-        <img
-          src="/images/products/crayfish.jpg"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-espresso/80" />
-        <div className="relative z-10 container mx-auto px-4 text-center md:px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
-            More Than a Market
-          </p>
-          <h2 className="mx-auto mt-4 max-w-2xl font-display text-3xl font-medium uppercase tracking-wide text-background md:text-5xl">
-            Where the community gathers
+      {/* Gallery fan */}
+      <section className="overflow-hidden bg-muted/40 py-16 md:py-24">
+        <div className="container mx-auto px-4 text-center md:px-6">
+          <h2 className="font-display text-3xl font-medium text-foreground md:text-4xl">
+            Inside Leavora
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-background/75">
-            Like the dove and the olive branch on our sign, Leavora stands for peace, abundance, and
-            homecoming.
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+            Hover a card to fan it open.
           </p>
-          <div className="mt-8">
-            <Link to="/about">
-              <Button size="lg" className="bg-background text-foreground hover:bg-background/90">
-                Visit Us
-              </Button>
-            </Link>
-          </div>
         </div>
+        <SocialCards cards={galleryCards} />
       </section>
     </div>
   );
