@@ -27,6 +27,118 @@ function dollarsToCents(amount: number) {
   return Math.round(amount * 100);
 }
 
+function formatMoney(cents: number) {
+  return `$${(cents / 100).toFixed(2)}`;
+}
+
+function buildOrderSummary(items: CheckoutItem[], shipping: Shipping, amountCents: number, paymentId: string) {
+  const lines = items.map(
+    (item) => `• ${item.quantity}× ${item.name} — $${(item.price * item.quantity).toFixed(2)}`,
+  );
+  const address = [
+    shipping.name,
+    shipping.line1,
+    shipping.line2,
+    [shipping.city, shipping.state, shipping.postalCode].filter(Boolean).join(", "),
+    shipping.email,
+    shipping.phone,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return {
+    subject: `New Leavora order — ${formatMoney(amountCents)}`,
+    text: [
+      "New paid order on leavoramarket.com",
+      "",
+      `Total: ${formatMoney(amountCents)}`,
+      `Payment ID: ${paymentId}`,
+      "",
+      "Items:",
+      ...lines,
+      "",
+      "Customer / shipping:",
+      address || "(not provided)",
+    ].join("\n"),
+    sms: `Leavora order ${formatMoney(amountCents)}: ${items
+      .map((i) => `${i.quantity}x ${i.name}`)
+      .join(", ")}. ${shipping.name || "Customer"} ${shipping.phone || ""} ${shipping.email || ""}`
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 320),
+  };
+}
+
+async function notifySellerEmail(subject: string, text: string) {
+  const apiKey = Deno.env.get("RESEND_API_KEY");
+  const to =
+    Deno.env.get("SELLER_EMAIL")?.trim() || "leavoraafricanmarket@gmail.com";
+  const from =
+    Deno.env.get("SELLER_EMAIL_FROM")?.trim() || "Leavora Orders <onboarding@resend.dev>";
+
+  if (!apiKey) {
+    console.warn("RESEND_API_KEY not set — skipping seller email.");
+    return { sent: false, reason: "missing_resend_key" };
+  }
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from,
+      to: [to],
+      subject,
+      text,
+    }),
+  });
+
+  if (!response.ok) {
+    const detail = await response.text();
+    console.error("Seller email failed:", detail);
+    return { sent: false, reason: detail.slice(0, 200) };
+  }
+
+  return { sent: true };
+}
+
+async function notifySellerSms(body: string) {
+  const sid = Deno.env.get("TWILIO_ACCOUNT_SID");
+  const token = Deno.env.get("TWILIO_AUTH_TOKEN");
+  const from = Deno.env.get("TWILIO_FROM_NUMBER");
+  const to = Deno.env.get("SELLER_PHONE")?.trim() || "+14054762965";
+
+  if (!sid || !token || !from) {
+    console.warn("Twilio not fully configured — skipping seller SMS.");
+    return { sent: false, reason: "missing_twilio" };
+  }
+
+  const auth = btoa(`${sid}:${token}`);
+  const params = new URLSearchParams({ To: to, From: from, Body: body });
+
+  const response = await fetch(
+    `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${auth}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: params,
+    },
+  );
+
+  if (!response.ok) {
+    const detail = await response.text();
+    console.error("Seller SMS failed:", detail);
+    return { sent: false, reason: detail.slice(0, 200) };
+  }
+
+  return { sent: true };
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -157,11 +269,30 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    const paymentId = payload.payment.id;
+    const summary = buildOrderSummary(items, shipping, amountCents, paymentId);
+
+    // Never fail the sale if notify fails
+    const [emailResult, smsResult] = await Promise.all([
+      notifySellerEmail(summary.subject, summary.text).catch((err) => ({
+        sent: false,
+        reason: err instanceof Error ? err.message : "email_error",
+      })),
+      notifySellerSms(summary.sms).catch((err) => ({
+        sent: false,
+        reason: err instanceof Error ? err.message : "sms_error",
+      })),
+    ]);
+
     return new Response(
       JSON.stringify({
-        paymentId: payload.payment.id,
+        paymentId,
         status: payload.payment.status ?? "COMPLETED",
         receiptUrl: payload.payment.receipt_url ?? null,
+        sellerNotify: {
+          email: emailResult,
+          sms: smsResult,
+        },
       }),
       {
         status: 200,
