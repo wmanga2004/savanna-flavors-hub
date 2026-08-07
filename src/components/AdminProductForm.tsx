@@ -37,7 +37,7 @@ export function AdminProductForm({ initial, submitLabel, onSubmit }: ProductForm
     try {
       await onSubmit({
         name: name.trim(),
-        slug: slug.trim() || undefined,
+        ...(slug.trim() ? { slug: slug.trim() } : {}),
         description: description.trim(),
         long_description: longDescription.trim(),
         price: Number(price),

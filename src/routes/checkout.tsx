@@ -135,9 +135,9 @@ function CheckoutPage() {
         shipping: {
           name: shipping.name.trim(),
           email: shipping.email.trim(),
-          phone: shipping.phone.trim() || undefined,
+          ...(shipping.phone.trim() ? { phone: shipping.phone.trim() } : {}),
           line1: shipping.line1.trim(),
-          line2: shipping.line2.trim() || undefined,
+          ...(shipping.line2.trim() ? { line2: shipping.line2.trim() } : {}),
           city: shipping.city.trim(),
           state: shipping.state.trim(),
           postalCode: shipping.postalCode.trim(),
