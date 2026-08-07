@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialCards from "@/components/ui/card-fan-carousel";
 import { ProductCard } from "@/components/ProductCard";
-import { HeroMarket } from "@/components/HeroMarket";
+import { HeroSection } from "@/components/ui/hero-section-5";
 import { fetchProducts, CATEGORIES } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
@@ -109,7 +109,7 @@ function HomePage() {
 
   return (
     <div className="flex flex-col">
-      <HeroMarket />
+      <HeroSection />
 
       {/* Intro */}
       <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
