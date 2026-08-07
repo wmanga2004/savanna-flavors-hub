@@ -153,28 +153,42 @@ async function notifySellerSms(body: string): Promise<NotifyResult> {
   }
 
   const auth = btoa(`${sid}:${token}`);
-  const params = new URLSearchParams({ To: to, From: from, Body: body });
 
-  const response = await fetch(
-    `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${auth}`,
-        "Content-Type": "application/x-www-form-urlencoded",
+  async function send(messageBody: string) {
+    const response = await fetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${auth}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({ To: to, From: from, Body: messageBody }),
       },
-      body: params,
-    },
-  );
+    );
+    if (!response.ok) {
+      const detail = await response.text();
+      return { sent: false as const, reason: detail.slice(0, 300), to };
+    }
+    return { sent: true as const, to };
+  }
 
-  if (!response.ok) {
-    const detail = await response.text();
-    console.error("Seller SMS failed:", detail);
-    return { sent: false, reason: detail.slice(0, 300), to };
+  // Full accounts: send the real order text.
+  // Trial accounts: Twilio only allows predefined templates (e.g. sms_order_confirmation).
+  const preferred = env("TWILIO_SMS_TEMPLATE") || body;
+  let result = await send(preferred);
+  if (!result.sent && /572006|predefined SMS templates/i.test(result.reason || "")) {
+    console.warn("Twilio trial blocked custom SMS — retrying with sms_order_confirmation");
+    result = await send("sms_order_confirmation");
+  }
+
+  if (!result.sent) {
+    console.error("Seller SMS failed:", result.reason);
+    return result;
   }
 
   console.log("Seller SMS sent to", to);
-  return { sent: true, to };
+  return result;
 }
 
 Deno.serve(async (req: Request) => {

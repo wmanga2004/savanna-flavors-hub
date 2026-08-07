@@ -61,8 +61,6 @@ Deno.serve(async (req: Request) => {
       };
     } else {
       const auth = btoa(`${sid}:${token}`);
-      const body =
-        "Leavora test: order alerts are working. You can ignore this message.";
       const response = await fetch(
         `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`,
         {
@@ -71,7 +69,12 @@ Deno.serve(async (req: Request) => {
             Authorization: `Basic ${auth}`,
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: new URLSearchParams({ To: to, From: from, Body: body }),
+          // Trial accounts require a predefined template name as Body.
+          body: new URLSearchParams({
+            To: to,
+            From: from,
+            Body: "sms_order_confirmation",
+          }),
         },
       );
       if (!response.ok) {
