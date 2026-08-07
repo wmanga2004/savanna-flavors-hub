@@ -1,3 +1,4 @@
+import type { Product } from "@/lib/products";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Minus, Plus, ShoppingBag, MapPin, Package } from "lucide-react";
 import { useState } from "react";
@@ -48,7 +49,7 @@ function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
 
   const relatedProducts = allProducts
-    .filter((p) => p.category === product.category && p.id !== product.id)
+    .filter((p: Product) => p.category === product.category && p.id !== product.id)
     .slice(0, 3);
 
   const handleAddToCart = () => {
@@ -162,7 +163,7 @@ function ProductDetailPage() {
             More from {product.category}
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {relatedProducts.map((related) => (
+            {relatedProducts.map((related: Product) => (
               <ProductCard key={related.id} product={related} />
             ))}
           </div>

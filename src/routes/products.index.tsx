@@ -1,3 +1,4 @@
+import type { Product } from "@/lib/products";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { z } from "zod";
@@ -46,7 +47,7 @@ function ProductsPage() {
     if (!category || !CATEGORIES.includes(category as (typeof CATEGORIES)[number])) {
       return products;
     }
-    return products.filter((p) => p.category === category);
+    return products.filter((p: Product) => p.category === category);
   }, [category, products]);
 
   return (
@@ -144,7 +145,7 @@ function ProductsPage() {
               {category ? ` in ${category}` : ""}
             </p>
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {filtered.map((product) => (
+              {filtered.map((product: Product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>

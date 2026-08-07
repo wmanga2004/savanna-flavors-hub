@@ -82,13 +82,13 @@ async function invokeAdmin<T>(
 
   // supabase-js invoke is POST-only; use fetch for full REST methods
   const url = new URL(
-    `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/${name}`,
+    `${import.meta.env['VITE_SUPABASE_URL']}/functions/v1/${name}`,
   );
   if (options.query) {
     Object.entries(options.query).forEach(([k, v]) => url.searchParams.set(k, v));
   }
 
-  const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+  const anon = import.meta.env['VITE_SUPABASE_ANON_KEY'] as string;
   let response: Response;
   try {
     response = await fetch(url.toString(), {
@@ -99,7 +99,7 @@ async function invokeAdmin<T>(
         "Content-Type": "application/json",
         ...headers,
       },
-      body: options.body != null ? JSON.stringify(options.body) : undefined,
+      ...(options.body != null ? { body: JSON.stringify(options.body) } : {}),
     });
   } catch {
     throw new Error("Could not reach the admin API. Check your connection and try again.");

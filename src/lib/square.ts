@@ -34,23 +34,29 @@ declare global {
   }
 }
 
+type SquareSdk = NonNullable<Window["Square"]>;
+
 const SANDBOX_SCRIPT = "https://sandbox.web.squarecdn.com/v1/square.js";
 const PROD_SCRIPT = "https://web.squarecdn.com/v1/square.js";
 
 export function getSquareConfig() {
-  const applicationId = import.meta.env.VITE_SQUARE_APPLICATION_ID as string | undefined;
-  const locationId = import.meta.env.VITE_SQUARE_LOCATION_ID as string | undefined;
-  const environment = (import.meta.env.VITE_SQUARE_ENVIRONMENT as string | undefined) ?? "sandbox";
+  const applicationId = import.meta.env['VITE_SQUARE_APPLICATION_ID'] as string | undefined;
+  const locationId = import.meta.env['VITE_SQUARE_LOCATION_ID'] as string | undefined;
+  const environment = (import.meta.env['VITE_SQUARE_ENVIRONMENT'] as string | undefined) ?? "sandbox";
 
   return {
     applicationId: applicationId?.trim() || "",
     locationId: locationId?.trim() || "",
-    environment: environment === "production" ? "production" : "sandbox",
+    environment: (environment === "production" ? "production" : "sandbox") as
+      | "production"
+      | "sandbox",
     configured: Boolean(applicationId?.trim() && locationId?.trim()),
   };
 }
 
-export function loadSquareSdk(environment: "sandbox" | "production") {
+export function loadSquareSdk(
+  environment: "sandbox" | "production",
+): Promise<SquareSdk> {
   if (typeof window === "undefined") {
     return Promise.reject(new Error("Square SDK requires a browser."));
   }
@@ -62,7 +68,7 @@ export function loadSquareSdk(environment: "sandbox" | "production") {
   const src = environment === "production" ? PROD_SCRIPT : SANDBOX_SCRIPT;
   const existing = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`);
 
-  return new Promise<NonNullable<typeof window.Square>>((resolve, reject) => {
+  return new Promise<SquareSdk>((resolve, reject) => {
     const onReady = () => {
       if (window.Square) resolve(window.Square);
       else reject(new Error("Square SDK failed to load."));
