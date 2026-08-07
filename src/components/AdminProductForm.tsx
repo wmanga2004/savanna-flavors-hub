@@ -1,9 +1,10 @@
-import { FormEvent, useState } from "react";
-import { Loader2, Upload } from "lucide-react";
+import { FormEvent, useRef, useState } from "react";
+import { ImagePlus, Loader2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import {
   ADMIN_CATEGORIES,
   uploadAdminProductImage,
@@ -31,10 +32,17 @@ export function AdminProductForm({ initial, submitLabel, onSubmit }: ProductForm
   const [sortOrder, setSortOrder] = useState(String(initial?.sort_order ?? 100));
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [dragging, setDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const dragDepth = useRef(0);
 
   const handleUpload = async (file: File | null) => {
     if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setError("Drop an image file (JPG, PNG, WebP, or GIF).");
+      return;
+    }
     setUploading(true);
     setError(null);
     try {
@@ -129,48 +137,100 @@ export function AdminProductForm({ initial, submitLabel, onSubmit }: ProductForm
           />
         </div>
         <div className="space-y-3 sm:col-span-2">
-          <Label htmlFor="image">Product image</Label>
-          <div className="flex flex-wrap items-start gap-4">
+          <Label>Product image</Label>
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label="Drop an image here or click to browse"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
+            onClick={() => {
+              if (!uploading) fileInputRef.current?.click();
+            }}
+            onDragEnter={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              dragDepth.current += 1;
+              setDragging(true);
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              dragDepth.current = Math.max(0, dragDepth.current - 1);
+              if (dragDepth.current === 0) setDragging(false);
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              dragDepth.current = 0;
+              setDragging(false);
+              const file = e.dataTransfer.files?.[0] ?? null;
+              void handleUpload(file);
+            }}
+            className={cn(
+              "relative flex min-h-[10rem] cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-border bg-muted/30 px-4 py-6 text-center transition-colors",
+              dragging && "border-primary bg-primary/10",
+              uploading && "pointer-events-none opacity-70",
+            )}
+          >
             {image ? (
               <img
                 src={image}
                 alt=""
-                className="h-24 w-24 rounded-md border border-border object-cover"
+                className="h-28 w-28 rounded-md border border-border object-cover"
               />
-            ) : null}
-            <div className="min-w-[16rem] flex-1 space-y-2">
-              <Input
-                id="image"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-                placeholder="/images/products/egusi.jpg or https://..."
-                required
-              />
-              <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-                <span className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-1.5">
-                  {uploading ? (
+            ) : (
+              <ImagePlus className="h-10 w-10 text-muted-foreground" />
+            )}
+            <div className="space-y-1">
+              <p className="flex items-center justify-center gap-2 text-sm font-medium text-foreground">
+                {uploading ? (
+                  <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
+                    Uploading…
+                  </>
+                ) : dragging ? (
+                  "Drop image to upload"
+                ) : (
+                  <>
                     <Upload className="h-4 w-4" />
-                  )}
-                  {uploading ? "Uploading…" : "Upload photo"}
-                </span>
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp,image/gif"
-                  className="sr-only"
-                  disabled={uploading}
-                  onChange={(e) => {
-                    void handleUpload(e.target.files?.[0] ?? null);
-                    e.target.value = "";
-                  }}
-                />
-              </label>
+                    Drag & drop an image here
+                  </>
+                )}
+              </p>
               <p className="text-xs text-muted-foreground">
-                Upload from your computer, or paste a link / site path like{" "}
-                <code>/images/products/malta.jpg</code>
+                or click to browse · JPG, PNG, WebP, GIF · max 5MB
               </p>
             </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              className="sr-only"
+              disabled={uploading}
+              onChange={(e) => {
+                void handleUpload(e.target.files?.[0] ?? null);
+                e.target.value = "";
+              }}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="image">Image URL (optional override)</Label>
+            <Input
+              id="image"
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+              placeholder="/images/products/egusi.jpg or https://..."
+              required
+            />
           </div>
         </div>
         <div className="space-y-2 sm:col-span-2">
