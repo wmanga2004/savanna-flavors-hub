@@ -160,3 +160,55 @@ export async function deleteAdminProduct(id: string) {
     query: { id },
   });
 }
+
+export async function uploadAdminProductImage(file: File) {
+  if (!import.meta.env["VITE_SUPABASE_URL"] || !import.meta.env["VITE_SUPABASE_ANON_KEY"]) {
+    throw new Error("Supabase is not configured.");
+  }
+  const token = getAdminToken();
+  if (!token) throw new Error("Please sign in.");
+
+  const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+  if (!allowed.includes(file.type)) {
+    throw new Error("Use a JPG, PNG, WebP, or GIF image.");
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error("Image must be 5MB or smaller.");
+  }
+
+  const buffer = await file.arrayBuffer();
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  bytes.forEach((b) => {
+    binary += String.fromCharCode(b);
+  });
+  const dataBase64 = btoa(binary);
+
+  const anon = import.meta.env["VITE_SUPABASE_ANON_KEY"] as string;
+  const response = await fetch(
+    `${import.meta.env["VITE_SUPABASE_URL"]}/functions/v1/admin-upload`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${anon}`,
+        apikey: anon,
+        "Content-Type": "application/json",
+        "x-admin-token": token,
+      },
+      body: JSON.stringify({
+        fileName: file.name,
+        contentType: file.type,
+        dataBase64,
+      }),
+    },
+  );
+
+  const payload = (await response.json().catch(() => ({}))) as {
+    url?: string;
+    error?: string;
+  };
+  if (!response.ok || !payload.url) {
+    throw new Error(payload.error || "Upload failed.");
+  }
+  return payload.url;
+}

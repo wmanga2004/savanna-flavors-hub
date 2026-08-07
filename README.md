@@ -1,26 +1,35 @@
-# Savory Africa
+# Leavora African Market
 
-make website that sells african food items
+Online storefront for **Leavora African Market** (Oklahoma City) — shop groceries on the site and manage products from `/admin`.
 
-This project was built with [Lovable](https://lovable.dev).
+**Live sites**
+- Custom domain: https://leavoramarket.com
+- Lovable URL: https://savanna-flavors-hub.lovable.app
+- Editor: https://lovable.dev/projects/a4bf1c02-9b11-467c-8339-2b6db3ac1233
 
-**Live app**: https://savanna-flavors-hub.lovable.app
+## Features
 
-## Build with Lovable
+- Product catalog in Supabase (no Square catalog required)
+- On-site checkout with Square Web Payments
+- Staff admin at `/admin` (password-protected) with product CRUD + image upload
+- Connected to Lovable via GitHub sync on `main`
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/a4bf1c02-9b11-467c-8339-2b6db3ac1233).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+## Local development
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
 npm i
 npm run dev
 ```
+
+Open http://localhost:5173 (use `localhost`, not `127.0.0.1`, for Square card fields).
+
+## Environment
+
+Public vars live in `.env` (committed for Lovable). Secrets go in `.env.local` and Supabase Edge Function secrets:
+
+- `SITE_URL=https://leavoramarket.com`
+- `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`, `SQUARE_ENVIRONMENT`
+- `ADMIN_PASSWORD`
+- `VITE_SQUARE_APPLICATION_ID`, `VITE_SQUARE_LOCATION_ID`, `VITE_SQUARE_ENVIRONMENT`
+
+To take **real** payments, switch those Square values to **Production** credentials from [developer.squareup.com](https://developer.squareup.com/apps).

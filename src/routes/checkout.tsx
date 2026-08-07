@@ -280,10 +280,17 @@ function CheckoutPage() {
                   className="min-h-[100px] rounded-md border border-border bg-card p-3"
                 />
               )}
-              <p className="text-xs text-muted-foreground">
-                Sandbox test card: <span className="font-mono">4111 1111 1111 1111</span>, any
-                future expiry, any CVV, any ZIP.
-              </p>
+              {square.environment === "sandbox" ? (
+                <p className="text-xs text-muted-foreground">
+                  Test mode card: <span className="font-mono">4111 1111 1111 1111</span>, any
+                  future expiry, any CVV, any ZIP.
+                </p>
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  Card payments are processed securely on Leavora. Your card details never leave
+                  this page.
+                </p>
+              )}
             </section>
 
             <Button

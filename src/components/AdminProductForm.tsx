@@ -1,10 +1,12 @@
 import { FormEvent, useState } from "react";
+import { Loader2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   ADMIN_CATEGORIES,
+  uploadAdminProductImage,
   type AdminProduct,
   type AdminProductInput,
 } from "@/lib/admin-api";
@@ -28,7 +30,22 @@ export function AdminProductForm({ initial, submitLabel, onSubmit }: ProductForm
   const [inStock, setInStock] = useState(initial?.in_stock ?? true);
   const [sortOrder, setSortOrder] = useState(String(initial?.sort_order ?? 100));
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleUpload = async (file: File | null) => {
+    if (!file) return;
+    setUploading(true);
+    setError(null);
+    try {
+      const url = await uploadAdminProductImage(file);
+      setImage(url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -37,7 +54,7 @@ export function AdminProductForm({ initial, submitLabel, onSubmit }: ProductForm
     try {
       await onSubmit({
         name: name.trim(),
-        ...(slug.trim() ? { slug: slug.trim() } : {}),
+        slug: slug.trim() || undefined,
         description: description.trim(),
         long_description: longDescription.trim(),
         price: Number(price),
@@ -111,19 +128,50 @@ export function AdminProductForm({ initial, submitLabel, onSubmit }: ProductForm
             required
           />
         </div>
-        <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="image">Image URL</Label>
-          <Input
-            id="image"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            placeholder="/images/products/egusi.jpg or https://..."
-            required
-          />
-          <p className="text-xs text-muted-foreground">
-            Paste a full image link, or use an existing site path like{" "}
-            <code>/images/products/malta.jpg</code>
-          </p>
+        <div className="space-y-3 sm:col-span-2">
+          <Label htmlFor="image">Product image</Label>
+          <div className="flex flex-wrap items-start gap-4">
+            {image ? (
+              <img
+                src={image}
+                alt=""
+                className="h-24 w-24 rounded-md border border-border object-cover"
+              />
+            ) : null}
+            <div className="min-w-[16rem] flex-1 space-y-2">
+              <Input
+                id="image"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+                placeholder="/images/products/egusi.jpg or https://..."
+                required
+              />
+              <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+                <span className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-1.5">
+                  {uploading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Upload className="h-4 w-4" />
+                  )}
+                  {uploading ? "Uploading…" : "Upload photo"}
+                </span>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  className="sr-only"
+                  disabled={uploading}
+                  onChange={(e) => {
+                    void handleUpload(e.target.files?.[0] ?? null);
+                    e.target.value = "";
+                  }}
+                />
+              </label>
+              <p className="text-xs text-muted-foreground">
+                Upload from your computer, or paste a link / site path like{" "}
+                <code>/images/products/malta.jpg</code>
+              </p>
+            </div>
+          </div>
         </div>
         <div className="space-y-2 sm:col-span-2">
           <Label htmlFor="description">Short description</Label>
@@ -167,7 +215,7 @@ export function AdminProductForm({ initial, submitLabel, onSubmit }: ProductForm
 
       {error && <p className="text-sm text-destructive">{error}</p>}
 
-      <Button type="submit" disabled={loading}>
+      <Button type="submit" disabled={loading || uploading}>
         {loading ? "Saving…" : submitLabel}
       </Button>
     </form>

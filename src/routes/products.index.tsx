@@ -66,7 +66,7 @@ function ProductsPage() {
           </h1>
           <p className="mt-4 max-w-xl text-background/75">
             Produce, spices, grains, oils, frozen foods, and specialty drinks — stocked for the
-            diaspora kitchen. Add to cart and checkout right here on our site.
+            diaspora kitchen. Shop and pay on leavoramarket.com without leaving the site.
           </p>
         </div>
       </section>

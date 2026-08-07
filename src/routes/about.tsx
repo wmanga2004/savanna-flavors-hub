@@ -105,11 +105,11 @@ function AboutPage() {
               <Link to="/products">
                 <Button size="lg">Shop the Market</Button>
               </Link>
-              <Link to="/products">
+              <a href="https://maps.google.com/?q=16405+Drywater+Dr,+Oklahoma+City,+OK+73170">
                 <Button size="lg" variant="outline">
-                  Browse Shop
+                  Get directions
                 </Button>
-              </Link>
+              </a>
             </div>
           </div>
           <div className="aspect-[4/3] overflow-hidden bg-muted">
