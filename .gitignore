@@ -15,9 +15,7 @@ dist-ssr
 .tanstack/**
 .nitro
 *.local
-.env
-.env.*
-!.env.example
+.env.local
 seed-products.sql
 seed-payload.json
 

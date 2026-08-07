@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { useCart } from "@/components/cart-context";
 import { formatPrice } from "@/lib/products";
-import { createSquareCheckout } from "@/lib/checkout";
+import { createCheckoutSession } from "@/lib/checkout";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 
@@ -25,16 +25,14 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
     if (!items.length || checkingOut) return;
     setCheckingOut(true);
     try {
-      const result = await createSquareCheckout({
-        data: {
-          items: items.map((item) => ({
-            name: item.name,
-            quantity: item.quantity,
-            price: item.price,
-            productId: item.productId,
-          })),
-        },
-      });
+      const result = await createCheckoutSession(
+        items.map((item) => ({
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          productId: item.productId,
+        })),
+      );
       clearCart();
       window.location.href = result.checkoutUrl;
     } catch (error) {
