@@ -176,8 +176,8 @@ function CheckoutPage() {
           Pay on Leavora
         </h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
-          Enter shipping details and pay with your card right here. You stay on our site the whole
-          time — Square only processes the payment securely in the background.
+          Enter shipping details and pay with your card right here. You never leave Leavora — the
+          whole order stays on this website.
         </p>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
@@ -266,7 +266,7 @@ function CheckoutPage() {
               <h2 className="font-display text-xl font-medium text-foreground">Payment</h2>
               {!square.configured ? (
                 <p className="rounded-md border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
-                  Square Application ID is not configured for this build.
+                  Card payments are not configured for this build yet.
                 </p>
               ) : cardError ? (
                 <p className="rounded-md border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">

@@ -240,16 +240,16 @@ export function HeroMarket() {
         </p>
         <div data-hero="actions" className="mt-8 flex flex-wrap gap-3">
           <Link to="/products">
-            <Button size="lg" className="gap-2 bg-background text-foreground hover:bg-background/90">
-              Explore the Market <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-          <Link to="/products">
             <Button
               size="lg"
               className="gap-2 bg-primary text-espresso hover:bg-gold-deep hover:text-background"
             >
-              Shop Online <ArrowRight className="h-4 w-4" />
+              Shop the Market <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
+          <Link to="/about">
+            <Button size="lg" className="gap-2 bg-background text-foreground hover:bg-background/90">
+              Visit Us
             </Button>
           </Link>
         </div>

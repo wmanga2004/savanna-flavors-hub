@@ -150,7 +150,7 @@ function ProductDetailPage() {
             </div>
             <div className="flex items-center gap-3">
               <Package className="h-5 w-5 text-primary" />
-              <span className="text-sm text-muted-foreground">Secure Square checkout</span>
+              <span className="text-sm text-muted-foreground">Checkout stays on our site</span>
             </div>
           </div>
         </div>

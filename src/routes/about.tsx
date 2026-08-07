@@ -103,7 +103,7 @@ function AboutPage() {
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/products">
-                <Button size="lg">Shop Online</Button>
+                <Button size="lg">Shop the Market</Button>
               </Link>
               <Link to="/products">
                 <Button size="lg" variant="outline">

@@ -50,7 +50,7 @@ export function Header() {
             to="/products"
             className="rounded-sm bg-primary px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-gold-deep hover:text-background"
           >
-            Shop Online
+            Shop
           </Link>
         </nav>
 
