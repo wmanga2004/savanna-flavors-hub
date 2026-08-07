@@ -18,18 +18,18 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
-      <div className="container mx-auto flex h-[4.75rem] items-center justify-between px-4 md:h-[5.5rem] md:px-6">
-        <Link to="/" className="flex items-center gap-2.5">
+      <div className="container mx-auto flex h-[5.25rem] items-center justify-between px-4 md:h-[6rem] md:px-6">
+        <Link to="/" className="flex items-center gap-3">
           <img
             src="/images/logo-mark.png"
             alt="Leavora"
-            className="h-16 w-auto object-contain md:h-20"
+            className="h-20 w-auto object-contain md:h-24"
           />
           <span className="flex flex-col leading-none">
-            <span className="font-display text-xl font-medium tracking-tight text-foreground md:text-2xl">
+            <span className="font-display text-2xl font-medium tracking-tight text-foreground md:text-3xl">
               Leavora
             </span>
-            <span className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-gold-deep">
+            <span className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-gold-deep">
               African Market
             </span>
           </span>
