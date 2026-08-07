@@ -23,6 +23,14 @@ type Shipping = {
   postalCode?: string;
 };
 
+type NotifyResult = { sent: boolean; reason?: string; to?: string };
+
+function env(name: string) {
+  const raw = Deno.env.get(name)?.trim();
+  if (!raw) return "";
+  return raw.replace(/^["']|["']$/g, "").trim();
+}
+
 function dollarsToCents(amount: number) {
   return Math.round(amount * 100);
 }
@@ -31,9 +39,25 @@ function formatMoney(cents: number) {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
-function buildOrderSummary(items: CheckoutItem[], shipping: Shipping, amountCents: number, paymentId: string) {
+/** Normalize US-ish numbers to E.164 (+1…). */
+function toE164(phone: string) {
+  const cleaned = phone.replace(/[^\d+]/g, "");
+  if (cleaned.startsWith("+") && cleaned.length >= 11) return cleaned;
+  const digits = cleaned.replace(/\D/g, "");
+  if (digits.length === 10) return `+1${digits}`;
+  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
+  return cleaned.startsWith("+") ? cleaned : digits ? `+${digits}` : "";
+}
+
+function buildOrderSummary(
+  items: CheckoutItem[],
+  shipping: Shipping,
+  amountCents: number,
+  paymentId: string,
+) {
   const lines = items.map(
-    (item) => `• ${item.quantity}× ${item.name} — $${(item.price * item.quantity).toFixed(2)}`,
+    (item) =>
+      `• ${item.quantity}× ${item.name} — $${(item.price * item.quantity).toFixed(2)}`,
   );
   const address = [
     shipping.name,
@@ -69,16 +93,18 @@ function buildOrderSummary(items: CheckoutItem[], shipping: Shipping, amountCent
   };
 }
 
-async function notifySellerEmail(subject: string, text: string) {
-  const apiKey = Deno.env.get("RESEND_API_KEY");
-  const to =
-    Deno.env.get("SELLER_EMAIL")?.trim() || "leavoraafricanmarket@gmail.com";
+async function notifySellerEmail(
+  subject: string,
+  text: string,
+): Promise<NotifyResult> {
+  const apiKey = env("RESEND_API_KEY");
+  const to = env("SELLER_EMAIL") || "leavoraafricanmarket@gmail.com";
   const from =
-    Deno.env.get("SELLER_EMAIL_FROM")?.trim() || "Leavora Orders <onboarding@resend.dev>";
+    env("SELLER_EMAIL_FROM") || "Leavora Orders <onboarding@resend.dev>";
 
   if (!apiKey) {
     console.warn("RESEND_API_KEY not set — skipping seller email.");
-    return { sent: false, reason: "missing_resend_key" };
+    return { sent: false, reason: "missing_resend_key", to };
   }
 
   const response = await fetch("https://api.resend.com/emails", {
@@ -98,21 +124,32 @@ async function notifySellerEmail(subject: string, text: string) {
   if (!response.ok) {
     const detail = await response.text();
     console.error("Seller email failed:", detail);
-    return { sent: false, reason: detail.slice(0, 200) };
+    return { sent: false, reason: detail.slice(0, 300), to };
   }
 
-  return { sent: true };
+  console.log("Seller email sent to", to);
+  return { sent: true, to };
 }
 
-async function notifySellerSms(body: string) {
-  const sid = Deno.env.get("TWILIO_ACCOUNT_SID");
-  const token = Deno.env.get("TWILIO_AUTH_TOKEN");
-  const from = Deno.env.get("TWILIO_FROM_NUMBER");
-  const to = Deno.env.get("SELLER_PHONE")?.trim() || "+14054762965";
+async function notifySellerSms(body: string): Promise<NotifyResult> {
+  const sid = env("TWILIO_ACCOUNT_SID");
+  const token = env("TWILIO_AUTH_TOKEN");
+  const fromRaw = env("TWILIO_FROM_NUMBER");
+  const toRaw = env("SELLER_PHONE") || "+14054762965";
+  const from = toE164(fromRaw);
+  const to = toE164(toRaw);
 
   if (!sid || !token || !from) {
-    console.warn("Twilio not fully configured — skipping seller SMS.");
-    return { sent: false, reason: "missing_twilio" };
+    console.warn("Twilio not fully configured — skipping seller SMS.", {
+      hasSid: Boolean(sid),
+      hasToken: Boolean(token),
+      hasFrom: Boolean(from),
+    });
+    return { sent: false, reason: "missing_twilio", to };
+  }
+
+  if (!to) {
+    return { sent: false, reason: "invalid_seller_phone", to: toRaw };
   }
 
   const auth = btoa(`${sid}:${token}`);
@@ -133,10 +170,11 @@ async function notifySellerSms(body: string) {
   if (!response.ok) {
     const detail = await response.text();
     console.error("Seller SMS failed:", detail);
-    return { sent: false, reason: detail.slice(0, 200) };
+    return { sent: false, reason: detail.slice(0, 300), to };
   }
 
-  return { sent: true };
+  console.log("Seller SMS sent to", to);
+  return { sent: true, to };
 }
 
 Deno.serve(async (req: Request) => {
@@ -152,9 +190,9 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const accessToken = Deno.env.get("SQUARE_ACCESS_TOKEN");
-    const locationId = Deno.env.get("SQUARE_LOCATION_ID");
-    const environment = Deno.env.get("SQUARE_ENVIRONMENT") ?? "sandbox";
+    const accessToken = env("SQUARE_ACCESS_TOKEN");
+    const locationId = env("SQUARE_LOCATION_ID");
+    const environment = env("SQUARE_ENVIRONMENT") || "sandbox";
 
     if (!accessToken || !locationId) {
       return new Response(
@@ -283,6 +321,8 @@ Deno.serve(async (req: Request) => {
         reason: err instanceof Error ? err.message : "sms_error",
       })),
     ]);
+
+    console.log("sellerNotify", JSON.stringify({ email: emailResult, sms: smsResult }));
 
     return new Response(
       JSON.stringify({

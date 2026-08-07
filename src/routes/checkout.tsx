@@ -127,7 +127,7 @@ function CheckoutPage() {
         );
       }
 
-      await processCardPayment({
+      const payment = await processCardPayment({
         sourceId: tokenResult.token,
         idempotencyKey: crypto.randomUUID(),
         items: items.map((item) => ({
@@ -150,6 +150,19 @@ function CheckoutPage() {
 
       clearCart();
       toast.success("Payment successful");
+
+      const emailOk = payment.sellerNotify?.email?.sent;
+      const smsOk = payment.sellerNotify?.sms?.sent;
+      if (!emailOk || !smsOk) {
+        const bits = [
+          !emailOk
+            ? `Email: ${payment.sellerNotify?.email?.reason || "not sent"}`
+            : null,
+          !smsOk ? `SMS: ${payment.sellerNotify?.sms?.reason || "not sent"}` : null,
+        ].filter(Boolean);
+        toast.warning(`Order paid, but seller alert issue — ${bits.join(" · ")}`);
+      }
+
       navigate({ to: "/checkout/success" });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Payment failed. Please try again.");

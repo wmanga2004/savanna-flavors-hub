@@ -46,7 +46,16 @@ export async function processCardPayment(input: {
   }
 
   const payload = data as
-    | { paymentId?: string; status?: string; receiptUrl?: string | null; error?: string }
+    | {
+        paymentId?: string;
+        status?: string;
+        receiptUrl?: string | null;
+        error?: string;
+        sellerNotify?: {
+          email?: { sent?: boolean; reason?: string; to?: string };
+          sms?: { sent?: boolean; reason?: string; to?: string };
+        };
+      }
     | null;
 
   if (!payload?.paymentId) {
