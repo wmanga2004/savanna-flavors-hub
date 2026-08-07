@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import { ProductCard } from "@/components/ProductCard";
 import { useCart } from "@/components/cart-context";
 import { fetchProductBySlug, fetchProducts, formatPrice } from "@/lib/products";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/products/$slug")({
   loader: async ({ params }) => {
@@ -62,7 +61,6 @@ function ProductDetailPage() {
       unit: product.unit,
       quantity,
     });
-    toast.success(`Added ${quantity} × ${product.name} to cart`);
   };
 
   return (

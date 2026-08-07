@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { toast } from "sonner";
 
 export interface CartItem {
   productId: string;
@@ -37,6 +38,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
         return [...current, { ...item, quantity }];
       });
+      toast.success(
+        quantity > 1
+          ? `Added ${quantity} × ${item.name} to cart`
+          : `Added ${item.name} to cart`,
+      );
     },
     [],
   );
