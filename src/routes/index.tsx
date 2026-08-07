@@ -3,7 +3,8 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialCards from "@/components/ui/card-fan-carousel";
 import { ProductCard } from "@/components/ProductCard";
-import { products, SQUARE_SHOP_URL, CATEGORIES } from "@/lib/products";
+import { HeroMarket } from "@/components/HeroMarket";
+import { products, CATEGORIES } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -97,44 +98,7 @@ const departmentBlurb: Record<string, string> = {
 function HomePage() {
   return (
     <div className="flex flex-col">
-      {/* Full-bleed hero */}
-      <section className="relative min-h-[88vh] w-full overflow-hidden bg-espresso">
-        <img
-          src="/images/hero.jpg"
-          alt="Shelves stocked with African market staples: oils, spices, gari, egusi, fresh produce, and plantains"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/55 to-espresso/25" />
-        <div className="relative z-10 flex min-h-[88vh] flex-col justify-end px-4 pb-16 pt-28 md:px-10 md:pb-20 lg:px-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary animate-in fade-in duration-700">
-            Authentic African Grocery & Market
-          </p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl font-medium leading-[1.05] text-background md:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            Rooted in Heritage.
-            <br />
-            Grown for Community.
-          </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-background/80 md:text-lg animate-in fade-in slide-in-from-bottom-2 duration-1000 delay-150">
-            Fresh produce, staple grains, spices, and the flavors of home — gathered from the
-            motherland and shared across every aisle.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3 animate-in fade-in duration-1000 delay-300">
-            <Link to="/products">
-              <Button
-                size="lg"
-                className="gap-2 bg-background text-foreground hover:bg-background/90"
-              >
-                Explore the Market <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-            <a href={SQUARE_SHOP_URL} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="gap-2 bg-primary text-espresso hover:bg-gold-deep hover:text-background">
-                Order Online <ArrowRight className="h-4 w-4" />
-              </Button>
-            </a>
-          </div>
-        </div>
-      </section>
+      <HeroMarket />
 
       {/* Intro */}
       <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
