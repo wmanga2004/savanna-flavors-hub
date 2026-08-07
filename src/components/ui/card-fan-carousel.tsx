@@ -132,7 +132,7 @@ export default function SocialCards({ cards }: SocialCardsProps) {
       timer = setInterval(() => {
         if (paused || !isPhoneViewport()) return;
         cycle("right");
-      }, 3200);
+      }, 300);
     };
 
     const pauseForInteraction = () => {
