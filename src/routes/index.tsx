@@ -111,37 +111,7 @@ function HomePage() {
     <div className="flex flex-col">
       <HeroSection />
 
-      {/* Intro */}
-      <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <div className="aspect-[4/3] overflow-hidden">
-            <img
-              src="/images/intro-feast.jpg"
-              alt="A shared table of jollof rice, grilled fish, fufu, plantains, and stews"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep">
-              Home, In Every Aisle
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-medium text-foreground md:text-4xl">
-              Leavora, where community gathers
-            </h2>
-            <p className="mt-5 text-muted-foreground leading-relaxed">
-              Leavora African Market was built on a simple idea: that a grocery run should feel like
-              coming home. Every shelf carries the staples of the diaspora — the grains, spices, and
-              produce that turn a house into a home-cooked meal.
-            </p>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
-              We source with care, keep our prices honest, and greet every customer like family. This
-              isn&apos;t just where the community shops. It&apos;s where it gathers.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery fan — after intro, before departments */}
+      {/* Gallery fan */}
       <section className="overflow-hidden bg-muted/40 py-16 md:py-24">
         <div className="container mx-auto px-4 text-center md:px-6">
           <h2 className="font-display text-3xl font-medium text-foreground md:text-4xl">
