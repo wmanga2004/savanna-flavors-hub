@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Leavora Flyer — Community</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    @page { size: letter; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: #1a1410; }
+    .flyer {
+      width: 8.5in;
+      height: 11in;
+      position: relative;
+      overflow: hidden;
+      color: #1a1410;
+      font-family: "Source Sans 3", sans-serif;
+      background: #f4ebe0;
+    }
+    .top {
+      position: relative;
+      height: 5.6in;
+      overflow: hidden;
+    }
+    .top img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+    }
+    .top-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(26,20,16,0.25) 0%, rgba(26,20,16,0.55) 100%);
+    }
+    .top-copy {
+      position: absolute;
+      left: 0.65in;
+      right: 0.65in;
+      bottom: 0.45in;
+      color: #f7f1e8;
+      z-index: 2;
+    }
+    .eyebrow {
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #e8c56a;
+    }
+    .top-copy h1 {
+      margin-top: 0.15in;
+      font-family: Fraunces, Georgia, serif;
+      font-size: 40pt;
+      font-weight: 500;
+      line-height: 1.05;
+      max-width: 6.5in;
+    }
+    .body {
+      padding: 0.45in 0.65in 0.55in;
+    }
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.3in;
+      margin-bottom: 0.3in;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.22in;
+    }
+    .brand img {
+      width: 0.85in;
+      height: auto;
+      background: #111;
+      border-radius: 0.06in;
+    }
+    .brand .name {
+      font-family: Fraunces, Georgia, serif;
+      font-size: 28pt;
+      font-weight: 600;
+      line-height: 1;
+    }
+    .brand .sub {
+      margin-top: 0.05in;
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #9a7428;
+    }
+    .cta {
+      background: #1a1410;
+      color: #f7f1e8;
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.14in 0.22in;
+      white-space: nowrap;
+    }
+    .lead {
+      font-size: 13.5pt;
+      line-height: 1.45;
+      color: #3a3128;
+      max-width: 6.8in;
+    }
+    .grid {
+      margin-top: 0.35in;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.22in;
+    }
+    .card {
+      border-top: 2px solid #c9a24a;
+      padding-top: 0.14in;
+    }
+    .card h3 {
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9a7428;
+      margin-bottom: 0.08in;
+    }
+    .card p {
+      font-size: 11.5pt;
+      line-height: 1.4;
+      color: #2a221a;
+    }
+    .bottom {
+      margin-top: 0.35in;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      border-top: 1px solid rgba(154,116,40,0.35);
+      padding-top: 0.22in;
+    }
+    .url {
+      font-family: Fraunces, Georgia, serif;
+      font-size: 22pt;
+      color: #1a1410;
+    }
+    .social {
+      text-align: right;
+      font-size: 11pt;
+      line-height: 1.4;
+      color: #3a3128;
+    }
+    @media print {
+      html, body { background: white; }
+    }
+  </style>
+</head>
+<body>
+  <div class="flyer">
+    <div class="top">
+      <img src="flyer-bg-feast.png" alt="" />
+      <div class="top-shade"></div>
+      <div class="top-copy">
+        <p class="eyebrow">Oklahoma City · African Market</p>
+        <h1>Where the community gathers — and the flavors of home live.</h1>
+      </div>
+    </div>
+
+    <div class="body">
+      <div class="brand-row">
+        <div class="brand">
+          <img src="logo-mark.png" alt="Leavora" />
+          <div>
+            <div class="name">Leavora</div>
+            <div class="sub">African Market</div>
+          </div>
+        </div>
+        <div class="cta">Shop · leavoramarket.com</div>
+      </div>
+
+      <p class="lead">
+        Produce, spices, pounded yam, palm oils, dry fish, and everyday staples —
+        sourced with care for diaspora kitchens across OKC.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Visit</h3>
+          <p>
+            16405 Drywater Dr<br />
+            Oklahoma City, OK 73170
+          </p>
+        </div>
+        <div class="card">
+          <h3>Hours</h3>
+          <p>
+            Mon–Sat 9AM–8PM<br />
+            Sun 10AM–6PM
+          </p>
+        </div>
+        <div class="card">
+          <h3>Call</h3>
+          <p>
+            (405) 476-2965<br />
+            leavoramarket.com
+          </p>
+        </div>
+      </div>
+
+      <div class="bottom">
+        <div class="url">leavoramarket.com</div>
+        <div class="social">
+          Instagram @leovoraafricanmarket_okc<br />
+          TikTok @leavora.african.m
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
