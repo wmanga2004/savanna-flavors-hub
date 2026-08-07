@@ -38,10 +38,10 @@ export function Footer() {
             <h5 className="text-sm font-semibold uppercase tracking-[0.14em] text-primary">Email</h5>
             <p className="mt-3 text-sm">
               <a
-                href="mailto:hello@leavoramarket.com"
+                href="mailto:leavoraafricanmarket@gmail.com"
                 className="text-background/75 transition-colors hover:text-primary"
               >
-                hello@leavoramarket.com
+                leavoraafricanmarket@gmail.com
               </a>
             </p>
           </div>

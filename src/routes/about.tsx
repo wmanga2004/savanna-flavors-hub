@@ -100,6 +100,13 @@ function AboutPage() {
                   (405) 476-2965
                 </a>
               </p>
+              <p>
+                <strong className="text-foreground">Email</strong>
+                <br />
+                <a href="mailto:leavoraafricanmarket@gmail.com" className="hover:text-foreground">
+                  leavoraafricanmarket@gmail.com
+                </a>
+              </p>
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/products">
