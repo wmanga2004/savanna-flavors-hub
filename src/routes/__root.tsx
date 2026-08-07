@@ -88,6 +88,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      {
+        name: "google-site-verification",
+        content: "ippdyWAZPsc992vyfFeVVynoqtbuEcbOovmlRXyfCGY",
+      },
       { title: "Leavora African Market | Authentic Groceries & Community Market" },
       {
         name: "description",
