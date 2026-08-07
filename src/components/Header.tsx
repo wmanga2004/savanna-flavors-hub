@@ -18,12 +18,12 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85">
-      <div className="container mx-auto flex h-[4.25rem] items-center justify-between px-4 md:h-[5rem] md:px-6">
+      <div className="container mx-auto flex h-[4.75rem] items-center justify-between px-4 md:h-[5.5rem] md:px-6">
         <Link to="/" className="flex items-center gap-2.5">
           <img
             src="/images/logo-mark.png"
             alt="Leavora"
-            className="h-14 w-auto object-contain md:h-16"
+            className="h-16 w-auto object-contain md:h-20"
           />
           <span className="flex flex-col leading-none">
             <span className="font-display text-xl font-medium tracking-tight text-foreground md:text-2xl">
