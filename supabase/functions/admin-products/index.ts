@@ -115,7 +115,7 @@ Deno.serve(async (req: Request) => {
         price: Number(body.price),
         unit: body.unit?.trim() || "each",
         image: body.image?.trim() || "/images/shop-hero.jpg",
-        category: body.category?.trim() || "Oils & Pantry",
+        category: body.category?.trim() || "Oils & Condiments",
         tags: body.tags ?? [],
         in_stock: body.in_stock ?? true,
         sort_order: body.sort_order ?? 999,

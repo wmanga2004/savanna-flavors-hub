@@ -17,10 +17,10 @@ export interface Product {
 export const CATEGORIES = [
   "Fresh Produce",
   "Spices & Seasonings",
-  "Grains & Pounded Yam",
-  "Prepared & Frozen",
-  "Oils & Pantry",
-  "Beverages & Specialty",
+  "Flours & Staples",
+  "Fish & Meat",
+  "Oils & Condiments",
+  "Drinks & Dairy",
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];
@@ -67,8 +67,8 @@ export const fallbackProducts: Product[] = [
     price: 8.99,
     unit: "100g",
     image: "/images/products/egusi.jpg",
-    category: "Spices & Seasonings",
-    tags: ["Spice", "Soup"],
+    category: "Flours & Staples",
+    tags: ["Staple", "Soup"],
     inStock: true,
   },
   {
@@ -81,7 +81,7 @@ export const fallbackProducts: Product[] = [
     price: 14.99,
     unit: "10 lb",
     image: "/images/products/pounded-yam-10lb.jpg",
-    category: "Grains & Pounded Yam",
+    category: "Flours & Staples",
     tags: ["Staple", "Swallow"],
     inStock: true,
   },
@@ -94,7 +94,7 @@ export const fallbackProducts: Product[] = [
     price: 2.49,
     unit: "bottle",
     image: "/images/products/malta.jpg",
-    category: "Beverages & Specialty",
+    category: "Drinks & Dairy",
     tags: ["Drink", "Malt"],
     inStock: true,
   },

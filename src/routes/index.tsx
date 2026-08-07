@@ -96,12 +96,12 @@ const galleryCards = [
 ];
 
 const departmentBlurb: Record<string, string> = {
-  "Fresh Produce": "Fresh yam, okongobong, African plum, and boiled corn.",
-  "Spices & Seasonings": "Njangsang, egusi, crayfish, mambo, and maggi.",
-  "Grains & Pounded Yam": "Ola Ola pounded yam, plantain fufu, and garri.",
-  "Prepared & Frozen": "Bitter leaves, eru, dry fish, and snails.",
-  "Oils & Pantry": "Carotino, Praise palm oil, and pantry staples.",
-  "Beverages & Specialty": "Peak milk, Ovaltine, Nido, Tartina, and Malta.",
+  "Fresh Produce": "Fresh yam, okongobong, bitterleaf, eru, African plum, and boiled corn.",
+  "Spices & Seasonings": "Njangsang, maggi, mambo, suya spice, dry pepper, and soup spices.",
+  "Flours & Staples": "Pounded yam, plantain fufu, garri, bobolo, egusi, beans, and peanuts.",
+  "Fish & Meat": "Crayfish, dry fish, smoked fish, fresh mackerel, snails, and cow skin.",
+  "Oils & Condiments": "Palm oil, Carotino, Banga, palm soup base, and De Rica.",
+  "Drinks & Dairy": "Malta, Peak milk, Nido, Ovaltine, Vita Malt, Tartina, and Cerelac.",
 };
 
 function HomePage() {

@@ -10,14 +10,12 @@ import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 
 const aisleMarks = [
-  { label: "Fresh Produce", hint: "Yam · Plum · Corn" },
-  { label: "Egusi & Seeds", hint: "Soup bases" },
-  { label: "Palm Oils", hint: "Carotino · Praise" },
-  { label: "Pounded Yam", hint: "Ola Ola · Fufu" },
+  { label: "Fresh Produce", hint: "Yam · Leaves · Corn" },
   { label: "Spices", hint: "Njangsang · Maggi" },
-  { label: "Dried Fish", hint: "Crayfish · Stockfish" },
-  { label: "Beverages", hint: "Malta · Peak" },
-  { label: "Pantry", hint: "Garri · Semolina" },
+  { label: "Flours & Staples", hint: "Yam · Fufu · Garri" },
+  { label: "Fish & Meat", hint: "Dry fish · Crayfish" },
+  { label: "Oils", hint: "Palm · Carotino" },
+  { label: "Drinks & Dairy", hint: "Malta · Peak" },
 ];
 
 /**
