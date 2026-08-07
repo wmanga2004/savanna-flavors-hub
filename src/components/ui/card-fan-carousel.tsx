@@ -109,6 +109,68 @@ export default function SocialCards({ cards }: SocialCardsProps) {
     [totalCards, needsPagination],
   );
 
+  // Phone-only autoplay — smooth automatic advance, pauses while you interact
+  useEffect(() => {
+    if (!needsPagination || totalCards < 2) return;
+
+    let timer: ReturnType<typeof setInterval> | null = null;
+    let resumeTimer: ReturnType<typeof setTimeout> | null = null;
+    let paused = false;
+
+    const stop = () => {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    };
+
+    const start = () => {
+      stop();
+      if (!isPhoneViewport()) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (document.hidden) return;
+      timer = setInterval(() => {
+        if (paused || !isPhoneViewport()) return;
+        cycle("right");
+      }, 3200);
+    };
+
+    const pauseForInteraction = () => {
+      paused = true;
+      stop();
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        paused = false;
+        start();
+      }, 5000);
+    };
+
+    start();
+
+    const onResize = () => {
+      if (isPhoneViewport()) start();
+      else stop();
+    };
+
+    const onVisibility = () => {
+      if (document.hidden) stop();
+      else if (!paused) start();
+    };
+
+    window.addEventListener("resize", onResize);
+    document.addEventListener("visibilitychange", onVisibility);
+    const container = containerRef.current;
+    container?.addEventListener("touchstart", pauseForInteraction, { passive: true });
+
+    return () => {
+      stop();
+      if (resumeTimer) clearTimeout(resumeTimer);
+      window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVisibility);
+      container?.removeEventListener("touchstart", pauseForInteraction);
+    };
+  }, [cycle, needsPagination, totalCards]);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !totalCards) return;

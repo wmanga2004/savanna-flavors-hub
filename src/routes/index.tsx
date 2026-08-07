@@ -119,7 +119,7 @@ function HomePage() {
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
             <span className="hidden md:inline">Hover a card to fan it open.</span>
-            <span className="md:hidden">Swipe the cards or use the arrows.</span>
+            <span className="md:hidden">Cards move on their own — swipe anytime.</span>
           </p>
         </div>
         <SocialCards cards={galleryCards} />
