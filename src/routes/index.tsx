@@ -8,11 +8,16 @@ import { fetchProducts, CATEGORIES } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
-    const products = await fetchProducts();
-    const featuredProducts = products.filter((p) =>
-      ["egusi-seeds", "ola-ola-pounded-yam-10lb", "njangsang", "malta"].includes(p.slug),
-    );
-    return { products, featuredProducts };
+    try {
+      const products = await fetchProducts();
+      const featuredProducts = products.filter((p) =>
+        ["egusi-seeds", "ola-ola-pounded-yam-10lb", "njangsang", "malta"].includes(p.slug),
+      );
+      return { products, featuredProducts };
+    } catch (error) {
+      console.error("Home loader failed:", error);
+      return { products: [], featuredProducts: [] };
+    }
   },
   head: () => ({
     meta: [

@@ -44,6 +44,7 @@ function getHeightMultiplier(width: number) {
   else if (width < 1024) idealPx = 34 * 16;
   else idealPx = 38 * 16;
 
+  if (typeof window === "undefined") return 1;
   const available = window.innerHeight * 0.7;
   if (available >= idealPx) return 1;
   return available / idealPx;
