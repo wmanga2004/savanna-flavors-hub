@@ -111,6 +111,28 @@ function HomePage() {
     <div className="flex flex-col">
       <HeroSection />
 
+      {/* Gallery fan — right under the hero so visitors see it first */}
+      <section className="overflow-hidden bg-muted/40 py-10 md:py-14">
+        <div className="container mx-auto px-4 text-center md:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep">Gallery</p>
+          <h2 className="mt-3 font-display text-3xl font-medium text-foreground md:text-4xl">
+            Inside Leavora
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+            Hover a card to fan it open — a look at our aisles, staples, and the everyday moments
+            that make this a gathering place.
+          </p>
+        </div>
+        <SocialCards cards={galleryCards} />
+        <div className="mt-4 flex justify-center">
+          <Link to="/about">
+            <Button variant="outline" size="lg" className="gap-2">
+              Visit the Market <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
       {/* Intro */}
       <section className="container mx-auto px-4 py-16 md:px-6 md:py-24">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
@@ -203,28 +225,6 @@ function HomePage() {
           {featuredProducts.map((product: Product) => (
             <ProductCard key={product.id} product={product} />
           ))}
-        </div>
-      </section>
-
-      {/* Gallery fan carousel */}
-      <section className="overflow-hidden bg-muted/40 py-16 md:py-24">
-        <div className="container mx-auto px-4 text-center md:px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep">Gallery</p>
-          <h2 className="mt-3 font-display text-3xl font-medium text-foreground md:text-4xl">
-            Inside Leavora
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Hover a card to fan it open — a look at our aisles, staples, and the everyday moments
-            that make this a gathering place.
-          </p>
-        </div>
-        <SocialCards cards={galleryCards} />
-        <div className="mt-4 flex justify-center">
-          <Link to="/about">
-            <Button variant="outline" size="lg" className="gap-2">
-              Visit the Market <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
         </div>
       </section>
 
