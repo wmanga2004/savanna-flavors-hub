@@ -100,8 +100,8 @@ const departmentBlurb: Record<string, string> = {
   "Spices & Seasonings": "Njangsang, maggi, suya spice, dry pepper, and soup spices.",
   "Flours & Staples": "Pounded yam, plantain fufu, garri, bobolo, egusi, beans, and peanuts.",
   "Fish & Meat": "Crayfish, dry fish, smoked fish, fresh mackerel, snails, and cow skin.",
-  "Oils & Condiments": "Palm oil, Carotino, Banga, De Rica, Mambo, and palm soup base.",
-  "Drinks & Dairy": "Malta, Peak milk, Nido, Ovaltine, Vita Malt, Tartina, and Cerelac.",
+  "Oils & Condiments": "Palm oil, Carotino, Banga, De Rica, and palm soup base.",
+  "Drinks & Dairy": "Malta, Peak milk, Nido, Ovaltine, Vita Malt, Tartina, Cerelac, and Mambo.",
 };
 
 function HomePage() {
