@@ -161,3 +161,74 @@
 @utility text-balance {
   text-wrap: balance;
 }
+
+/* Card fan carousel layout */
+.fan-layout {
+  height: 22rem;
+  perspective: 1200px;
+}
+
+@media (min-width: 480px) {
+  .fan-layout {
+    height: 26rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .fan-layout {
+    height: 28rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .fan-layout {
+    height: 34rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fan-layout {
+    height: 38rem;
+  }
+}
+
+.fan-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(14rem, 42vw);
+  height: min(21rem, 63vw);
+  margin-left: calc(min(14rem, 42vw) / -2);
+  margin-top: calc(min(21rem, 63vw) / -2);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow:
+    0 12px 40px rgba(33, 26, 16, 0.22),
+    0 2px 8px rgba(33, 26, 16, 0.12);
+  will-change: transform, opacity;
+  background: var(--color-muted);
+}
+
+@media (min-width: 768px) {
+  .fan-card {
+    width: 16rem;
+    height: 24rem;
+    margin-left: -8rem;
+    margin-top: -12rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fan-card {
+    width: 18rem;
+    height: 27rem;
+    margin-left: -9rem;
+    margin-top: -13.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fan-card {
+    transition: none !important;
+  }
+}

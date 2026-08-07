@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SocialCards from "@/components/ui/card-fan-carousel";
 import { ProductCard } from "@/components/ProductCard";
 import { products, SQUARE_SHOP_URL, CATEGORIES } from "@/lib/products";
 
@@ -30,6 +31,59 @@ export const Route = createFileRoute("/")({
 const featuredProducts = products.filter((p) =>
   ["egusi-seeds", "ola-ola-pounded-yam-10lb", "njangsang", "malta"].includes(p.slug),
 );
+
+const galleryCards = [
+  {
+    imgUrl: "/images/products/egusi.jpg",
+    alt: "Egusi seeds",
+    linkUrl: "/products/egusi-seeds",
+  },
+  {
+    imgUrl: "/images/products/malta.jpg",
+    alt: "Malta Guinness",
+    linkUrl: "/products/malta",
+  },
+  {
+    imgUrl: "/images/products/njansang.jpg",
+    alt: "Njangsang",
+    linkUrl: "/products/njangsang",
+  },
+  {
+    imgUrl: "/images/products/pounded-yam-10lb.jpg",
+    alt: "Ola Ola pounded yam",
+    linkUrl: "/products/ola-ola-pounded-yam-10lb",
+  },
+  {
+    imgUrl: "/images/products/african-plum.jpg",
+    alt: "African plum",
+    linkUrl: "/products/african-plum",
+  },
+  {
+    imgUrl: "/images/products/crayfish.jpg",
+    alt: "Dried crayfish",
+    linkUrl: "/products/crayfish",
+  },
+  {
+    imgUrl: "/images/products/palm-soup-base.jpg",
+    alt: "Palm soup base",
+    linkUrl: "/products/palm-soup-base",
+  },
+  {
+    imgUrl: "/images/products/plantain-fufu.jpg",
+    alt: "Plantain fufu mix",
+    linkUrl: "/products/plantain-fufu",
+  },
+  {
+    imgUrl: "/images/products/yam.jpg",
+    alt: "Fresh yam",
+    linkUrl: "/products/fresh-yam",
+  },
+  {
+    imgUrl: "/images/intro-feast.jpg",
+    alt: "Shared feast at Leavora",
+    linkUrl: "/about",
+  },
+];
 
 const departmentBlurb: Record<string, string> = {
   "Fresh Produce": "Fresh yam, okongobong, African plum, and boiled corn.",
@@ -174,6 +228,28 @@ function HomePage() {
           {featuredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
+        </div>
+      </section>
+
+      {/* Gallery fan carousel */}
+      <section className="overflow-hidden bg-muted/40 py-16 md:py-24">
+        <div className="container mx-auto px-4 text-center md:px-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold-deep">Gallery</p>
+          <h2 className="mt-3 font-display text-3xl font-medium text-foreground md:text-4xl">
+            Inside Leavora
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+            Hover a card to fan it open — a look at our aisles, staples, and the everyday moments
+            that make this a gathering place.
+          </p>
+        </div>
+        <SocialCards cards={galleryCards} />
+        <div className="mt-4 flex justify-center">
+          <Link to="/about">
+            <Button variant="outline" size="lg" className="gap-2">
+              Visit the Market <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </section>
 
