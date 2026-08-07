@@ -98,7 +98,7 @@ function ProductDetailPage() {
           <p className="leading-relaxed text-muted-foreground">{product.longDescription}</p>
 
           <div className="flex flex-wrap gap-2">
-            {product.tags.map((tag) => (
+            {product.tags.map((tag: string) => (
               <Badge key={tag} variant="outline">
                 {tag}
               </Badge>
