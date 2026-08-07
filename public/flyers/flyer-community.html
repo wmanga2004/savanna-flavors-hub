@@ -21,25 +21,25 @@
     }
     .top {
       position: relative;
-      height: 5.6in;
+      height: 5.5in;
       overflow: hidden;
     }
     .top img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 40%;
+      object-position: center 45%;
     }
     .top-shade {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(26,20,16,0.25) 0%, rgba(26,20,16,0.55) 100%);
+      background: linear-gradient(180deg, rgba(26,20,16,0.2) 0%, rgba(26,20,16,0.58) 100%);
     }
     .top-copy {
       position: absolute;
-      left: 0.65in;
-      right: 0.65in;
-      bottom: 0.45in;
+      left: 0.6in;
+      right: 0.6in;
+      bottom: 0.4in;
       color: #f7f1e8;
       z-index: 2;
     }
@@ -51,37 +51,37 @@
       color: #e8c56a;
     }
     .top-copy h1 {
-      margin-top: 0.15in;
+      margin-top: 0.14in;
       font-family: Fraunces, Georgia, serif;
-      font-size: 40pt;
+      font-size: 36pt;
       font-weight: 500;
-      line-height: 1.05;
-      max-width: 6.5in;
+      line-height: 1.06;
+      max-width: 6.4in;
     }
     .body {
-      padding: 0.45in 0.65in 0.55in;
+      padding: 0.4in 0.6in 0.5in;
     }
     .brand-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.3in;
-      margin-bottom: 0.3in;
+      gap: 0.25in;
+      margin-bottom: 0.26in;
     }
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.22in;
+      gap: 0.2in;
     }
     .brand img {
-      width: 0.85in;
+      width: 0.8in;
       height: auto;
       background: #111;
-      border-radius: 0.06in;
+      border-radius: 0.05in;
     }
     .brand .name {
       font-family: Fraunces, Georgia, serif;
-      font-size: 28pt;
+      font-size: 26pt;
       font-weight: 600;
       line-height: 1;
     }
@@ -96,28 +96,29 @@
     .cta {
       background: #1a1410;
       color: #f7f1e8;
-      font-size: 11pt;
+      font-size: 10.5pt;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0.14in 0.22in;
+      padding: 0.13in 0.2in;
       white-space: nowrap;
     }
     .lead {
-      font-size: 13.5pt;
+      font-size: 13pt;
       line-height: 1.45;
       color: #3a3128;
-      max-width: 6.8in;
+      max-width: 6.6in;
     }
     .grid {
-      margin-top: 0.35in;
+      margin-top: 0.28in;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.22in;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 0.2in;
+      align-items: start;
     }
     .card {
       border-top: 2px solid #c9a24a;
-      padding-top: 0.14in;
+      padding-top: 0.12in;
     }
     .card h3 {
       font-size: 9pt;
@@ -128,26 +129,47 @@
       margin-bottom: 0.08in;
     }
     .card p {
-      font-size: 11.5pt;
+      font-size: 11pt;
       line-height: 1.4;
       color: #2a221a;
     }
+    .qr {
+      text-align: center;
+      background: #fff;
+      border: 1px solid rgba(26,20,16,0.12);
+      padding: 0.1in;
+      border-radius: 0.05in;
+    }
+    .qr img {
+      width: 1.1in;
+      height: 1.1in;
+      display: block;
+    }
+    .qr span {
+      display: block;
+      margin-top: 0.05in;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a1410;
+    }
     .bottom {
-      margin-top: 0.35in;
+      margin-top: 0.28in;
       display: flex;
       justify-content: space-between;
       align-items: end;
       border-top: 1px solid rgba(154,116,40,0.35);
-      padding-top: 0.22in;
+      padding-top: 0.18in;
     }
     .url {
       font-family: Fraunces, Georgia, serif;
-      font-size: 22pt;
+      font-size: 20pt;
       color: #1a1410;
     }
     .social {
       text-align: right;
-      font-size: 11pt;
+      font-size: 10.5pt;
       line-height: 1.4;
       color: #3a3128;
     }
@@ -159,7 +181,7 @@
 <body>
   <div class="flyer">
     <div class="top">
-      <img src="flyer-bg-feast.png" alt="" />
+      <img src="intro-feast.jpg" alt="" />
       <div class="top-shade"></div>
       <div class="top-copy">
         <p class="eyebrow">Oklahoma City · African Market</p>
@@ -205,6 +227,10 @@
             (405) 476-2965<br />
             leavoramarket.com
           </p>
+        </div>
+        <div class="qr">
+          <img src="qr-leavoramarket.png" alt="Scan to open leavoramarket.com" />
+          <span>Scan to shop</span>
         </div>
       </div>
 

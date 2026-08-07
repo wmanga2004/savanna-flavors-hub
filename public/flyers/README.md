@@ -2,29 +2,21 @@
 
 Print-ready **US Letter (8.5 × 11 in)** flyers for distribution.
 
+Photos are **only from your website**: `hero.jpg`, `intro-feast.jpg`, and `logo-mark.png`.
+
+Each flyer includes a **QR code** that opens **https://leavoramarket.com**.
+
 ## Files
 
-| File | Style |
-|------|--------|
-| `flyer-market.html` | Dark market aisle, heritage headline |
-| `flyer-community.html` | Feast photo + cream lower panel |
-| `flyer-bg-*.png` / `logo-mark.png` | Assets used by the HTML |
+| File | Photo used |
+|------|------------|
+| `flyer-market.html` / `.png` | Aisle hero (`hero.jpg`) |
+| `flyer-community.html` / `.png` | Feast table (`intro-feast.jpg`) |
+| `qr-leavoramarket.png` | QR → leavoramarket.com |
 
 ## How to print
 
-1. Open either HTML file in Chrome (double-click, or open from File Explorer).
-2. Press **Ctrl+P** (Print).
-3. Destination: **Save as PDF** or your printer.
-4. Set:
-   - Paper: **Letter**
-   - Margins: **None**
-   - Scale: **100%** / Default
-   - Background graphics: **On**
-5. Print color, preferably on thicker flyer paper (80–100 lb).
-
-## Online preview
-
-After publish, also available at:
-
-- https://leavoramarket.com/flyers/flyer-market.html
-- https://leavoramarket.com/flyers/flyer-community.html
+1. Open either HTML file in Chrome.
+2. Press **Ctrl+P**.
+3. Paper: **Letter** · Margins: **None** · Scale: **100%** · **Background graphics: On**.
+4. Print or **Save as PDF**.
