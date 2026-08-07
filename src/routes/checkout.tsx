@@ -32,6 +32,8 @@ function CheckoutPage() {
       amount: string;
       currencyCode: string;
       intent: string;
+      customerInitiated?: boolean;
+      sellerKeyedIn?: boolean;
       billingContact?: Record<string, unknown>;
     }) => Promise<{
       status: string;
@@ -104,6 +106,8 @@ function CheckoutPage() {
         amount: subtotal.toFixed(2),
         currencyCode: "USD",
         intent: "CHARGE",
+        customerInitiated: true,
+        sellerKeyedIn: false,
         billingContact: {
           givenName: shipping.name.split(" ")[0] || shipping.name,
           familyName: shipping.name.split(" ").slice(1).join(" ") || undefined,

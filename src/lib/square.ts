@@ -12,6 +12,8 @@ declare global {
             amount: string;
             currencyCode: string;
             intent: string;
+            customerInitiated?: boolean;
+            sellerKeyedIn?: boolean;
             billingContact?: {
               givenName?: string;
               familyName?: string;
