@@ -162,7 +162,7 @@
   text-wrap: balance;
 }
 
-/* Card fan carousel layout */
+/* Card fan carousel layout (desktop) */
 .fan-layout {
   height: 22rem;
   perspective: 1200px;
@@ -207,6 +207,8 @@
     0 2px 8px rgba(33, 26, 16, 0.12);
   will-change: transform, opacity;
   background: var(--color-muted);
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 @media (min-width: 768px) {
@@ -227,9 +229,22 @@
   }
 }
 
+/* Mobile snap carousel — hardware-accelerated native scroll */
+.mobile-snap-scroller {
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+}
+
+.mobile-snap-slide {
+  transform: translateZ(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fan-card {
     transition: none !important;
+  }
+  .mobile-snap-scroller {
+    scroll-behavior: auto;
   }
 }
 
