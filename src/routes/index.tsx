@@ -141,6 +141,19 @@ function HomePage() {
         </div>
       </section>
 
+      {/* Gallery fan — after intro, before departments */}
+      <section className="overflow-hidden bg-muted/40 py-16 md:py-24">
+        <div className="container mx-auto px-4 text-center md:px-6">
+          <h2 className="font-display text-3xl font-medium text-foreground md:text-4xl">
+            Inside Leavora
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
+            Hover a card to fan it open.
+          </p>
+        </div>
+        <SocialCards cards={galleryCards} />
+      </section>
+
       {/* Departments */}
       <section className="bg-espresso py-16 text-background md:py-20">
         <div className="container mx-auto px-4 md:px-6">
@@ -204,19 +217,6 @@ function HomePage() {
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-      </section>
-
-      {/* Gallery fan */}
-      <section className="overflow-hidden bg-muted/40 py-16 md:py-24">
-        <div className="container mx-auto px-4 text-center md:px-6">
-          <h2 className="font-display text-3xl font-medium text-foreground md:text-4xl">
-            Inside Leavora
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Hover a card to fan it open.
-          </p>
-        </div>
-        <SocialCards cards={galleryCards} />
       </section>
     </div>
   );
