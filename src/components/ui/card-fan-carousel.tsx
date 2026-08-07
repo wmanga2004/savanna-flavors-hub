@@ -46,6 +46,10 @@ function getHeightMultiplier(width: number) {
   return available / idealPx;
 }
 
+function isPhoneViewport() {
+  return typeof window !== "undefined" && window.innerWidth < 768;
+}
+
 type SlotConfig = { rot: number; scale: number; x: number; y: number; zIndex: number };
 
 function getSlotConfig(totalCards: number, slot: number): SlotConfig {
@@ -63,165 +67,9 @@ function getSlotConfig(totalCards: number, slot: number): SlotConfig {
 }
 
 const ARROW_CLASSES =
-  "relative flex items-center justify-center rounded-full border-[1.5px] border-black/10 bg-black/5 backdrop-blur-[16px] text-black/40 cursor-pointer shrink-0 z-30 outline-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:border-black/25 hover:text-black/70 active:opacity-70 transition-colors duration-300";
+  "relative flex items-center justify-center rounded-full border-[1.5px] border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-[16px] text-black/40 dark:text-white/55 cursor-pointer shrink-0 z-30 outline-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:border-black/25 dark:hover:border-white/25 hover:text-black/70 dark:hover:text-white/80 active:opacity-70 transition-colors duration-300 before:content-[''] before:absolute before:inset-[3px] before:rounded-full before:border before:border-black/[0.04] dark:before:border-white/[0.04] before:pointer-events-none";
 
-function useIsMobileCarousel() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px), (hover: none) and (pointer: coarse)");
-    const sync = () => setIsMobile(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-
-  return isMobile;
-}
-
-function Chevron({ direction }: { direction: "left" | "right" }) {
-  return (
-    <svg
-      className="relative z-[2] h-4 w-4 md:h-5 md:w-5"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points={direction === "left" ? "15 18 9 12 15 6" : "9 18 15 12 9 6"} />
-    </svg>
-  );
-}
-
-/** Native scroll-snap carousel — smooth on iOS/Android */
-function MobileSnapCarousel({ cards }: SocialCardsProps) {
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
-
-  useEffect(() => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-
-    let frame = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const slides = scroller.querySelectorAll<HTMLElement>("[data-slide]");
-        if (!slides.length) return;
-        const mid = scroller.scrollLeft + scroller.clientWidth / 2;
-        let best = 0;
-        let bestDist = Infinity;
-        slides.forEach((slide, i) => {
-          const center = slide.offsetLeft + slide.offsetWidth / 2;
-          const dist = Math.abs(center - mid);
-          if (dist < bestDist) {
-            bestDist = dist;
-            best = i;
-          }
-        });
-        setActive(best);
-      });
-    };
-
-    scroller.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => {
-      cancelAnimationFrame(frame);
-      scroller.removeEventListener("scroll", onScroll);
-    };
-  }, [cards.length]);
-
-  const goTo = (index: number) => {
-    const scroller = scrollerRef.current;
-    const slide = scroller?.querySelectorAll<HTMLElement>("[data-slide]")[index];
-    slide?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-  };
-
-  return (
-    <section className="relative z-20 w-full py-2">
-      <div
-        ref={scrollerRef}
-        className="mobile-snap-scroller flex w-full snap-x snap-mandatory gap-4 overflow-x-auto px-[12vw] pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        style={{ WebkitOverflowScrolling: "touch", scrollBehavior: "smooth" }}
-      >
-        {cards.map((card, index) => {
-          const inner = (
-            <img
-              src={card.imgUrl}
-              alt={card.alt || `Card ${index + 1}`}
-              loading={index < 2 ? "eager" : "lazy"}
-              decoding="async"
-              draggable={false}
-              className="h-full w-full object-cover"
-            />
-          );
-          return (
-            <div
-              key={index}
-              data-slide
-              className="mobile-snap-slide w-[76vw] max-w-[18rem] shrink-0 snap-center"
-            >
-              <div className="aspect-[2/3] overflow-hidden rounded-2xl bg-muted shadow-[0_12px_32px_rgba(33,26,16,0.18)]">
-                {card.linkUrl ? (
-                  <a
-                    href={card.linkUrl}
-                    className="block h-full w-full"
-                    onClick={(e) => {
-                      // Ignore tap if user was scrolling
-                      if (Math.abs((scrollerRef.current?.scrollLeft ?? 0) - active) > 2) {
-                        /* keep link */
-                      }
-                    }}
-                  >
-                    {inner}
-                  </a>
-                ) : (
-                  inner
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="mt-5 flex items-center justify-center gap-4">
-        <button
-          type="button"
-          className={`${ARROW_CLASSES} h-10 w-10`}
-          onClick={() => goTo(Math.max(0, active - 1))}
-          aria-label="Previous"
-        >
-          <Chevron direction="left" />
-        </button>
-        <div className="flex items-center gap-2">
-          {cards.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={`Go to card ${i + 1}`}
-              onClick={() => goTo(i)}
-              className={`h-2 w-2 rounded-full transition-transform duration-200 ${
-                i === active ? "scale-[1.35] bg-black/70" : "bg-black/15"
-              }`}
-            />
-          ))}
-        </div>
-        <button
-          type="button"
-          className={`${ARROW_CLASSES} h-10 w-10`}
-          onClick={() => goTo(Math.min(cards.length - 1, active + 1))}
-          aria-label="Next"
-        >
-          <Chevron direction="right" />
-        </button>
-      </div>
-    </section>
-  );
-}
-
-function DesktopFanCarousel({ cards }: SocialCardsProps) {
+export default function SocialCards({ cards }: SocialCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isAnimating = useRef(false);
   const hasEntered = useRef(false);
@@ -249,7 +97,9 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
 
   const cycle = useCallback(
     (direction: "left" | "right") => {
-      if (isAnimating.current || !needsPagination) return;
+      if (!needsPagination) return;
+      // On phones, allow snappy back-to-back swipes
+      if (isAnimating.current && !isPhoneViewport()) return;
       isAnimating.current = true;
       directionRef.current = direction;
       setCenterIndex((prev) =>
@@ -274,8 +124,13 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
     const hMult = getHeightMultiplier(window.innerWidth);
     const slotCount = needsPagination ? MAX_VISIBLE : totalCards;
     const config = (slot: number) => getSlotConfig(slotCount, slot);
+    const phone = isPhoneViewport();
 
     if (isFirstMount) isAnimating.current = true;
+
+    const settleEase = phone ? "power2.out" : "elastic.out(1.05,.78)";
+    const settleDuration = phone ? 0.4 : 1.2;
+    const moveDuration = phone ? 0.28 : 0.5;
 
     let completedCount = 0;
     const visibleCount = visibleMap.size;
@@ -306,9 +161,9 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
           gsap.set(card, { x: 0, y: `${12 * hMult}rem`, rotation: 0, scale: 0.5, opacity: 0 });
           gsap.to(card, {
             ...target,
-            duration: 1.1,
-            ease: "power3.out",
-            delay: 0.12 + slot * 0.04,
+            duration: settleDuration,
+            ease: settleEase,
+            delay: phone ? 0.05 + slot * 0.03 : 0.2 + slot * 0.06,
             onComplete: onCardDone,
           });
         } else if (!wasVisible) {
@@ -320,9 +175,19 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
             scale: 0.5,
             opacity: 0,
           });
-          gsap.to(card, { ...target, duration: 0.4, ease: "power2.out", onComplete: onCardDone });
+          gsap.to(card, {
+            ...target,
+            duration: moveDuration,
+            ease: "power2.out",
+            onComplete: onCardDone,
+          });
         } else {
-          gsap.to(card, { ...target, duration: 0.35, ease: "power2.out", onComplete: onCardDone });
+          gsap.to(card, {
+            ...target,
+            duration: moveDuration,
+            ease: "power2.out",
+            onComplete: onCardDone,
+          });
         }
       } else if (wasVisible) {
         const exitX = direction === "right" ? -40 : 40;
@@ -331,7 +196,7 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
           opacity: 0,
           scale: 0.5,
           rotation: direction === "right" ? -30 : 30,
-          duration: 0.3,
+          duration: phone ? 0.22 : 0.4,
           ease: "power2.in",
           zIndex: 0,
         });
@@ -354,6 +219,9 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
     const centerSlot = visibleEntries.length >> 1;
 
     const updateHoverLayout = (hoveredSlot: number | null) => {
+      // Keep hover fan on desktop / iPad; phones skip it
+      if (phone) return;
+
       const mult = getResponsiveMultiplier(window.innerWidth);
       const hM = getHeightMultiplier(window.innerWidth);
 
@@ -397,9 +265,9 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
           y: `${targetY}rem`,
           rotation: targetRot,
           scale: targetScale,
-          duration: 0.4,
+          duration: 0.5,
           delay,
-          ease: "power2.out",
+          ease: "elastic.out(1,.75)",
           overwrite: "auto",
           force3D: true,
         });
@@ -407,31 +275,101 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
       });
     };
 
-    const enterHandlers = visibleEntries.map(({ el, slot }) => {
-      const handler = () => {
-        if (isAnimating.current) return;
-        if (leaveTimer) {
-          clearTimeout(leaveTimer);
-          leaveTimer = null;
-        }
-        if (activeSlot !== slot) {
-          activeSlot = slot;
-          updateHoverLayout(slot);
-        }
-      };
-      el.addEventListener("pointerenter", handler);
-      return { el, handler };
-    });
+    const enterHandlers = phone
+      ? []
+      : visibleEntries.map(({ el, slot }) => {
+          const handler = () => {
+            if (isAnimating.current) return;
+            if (leaveTimer) {
+              clearTimeout(leaveTimer);
+              leaveTimer = null;
+            }
+            if (activeSlot !== slot) {
+              activeSlot = slot;
+              updateHoverLayout(slot);
+            }
+          };
+          el.addEventListener("pointerenter", handler);
+          return { el, handler };
+        });
 
     const onMouseLeave = () => {
-      if (isAnimating.current) return;
+      if (phone || isAnimating.current) return;
       if (leaveTimer) clearTimeout(leaveTimer);
       leaveTimer = setTimeout(() => {
         activeSlot = null;
         updateHoverLayout(null);
       }, 50);
     };
-    container.addEventListener("pointerleave", onMouseLeave);
+    if (!phone) {
+      container.addEventListener("pointerleave", onMouseLeave);
+    }
+
+    // Sensitive touch swipe (phones) — low threshold + velocity
+    let startX = 0;
+    let startY = 0;
+    let startT = 0;
+    let tracking = false;
+    let locked: "h" | "v" | null = null;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (!needsPagination || !phone || e.touches.length !== 1) return;
+      const t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      startT = performance.now();
+      tracking = true;
+      locked = null;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!tracking || !phone || e.touches.length !== 1) return;
+      const t = e.touches[0];
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+
+      if (!locked) {
+        if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+          locked = Math.abs(dx) >= Math.abs(dy) ? "h" : "v";
+        }
+      }
+
+      if (locked === "h") {
+        e.preventDefault();
+      }
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (!tracking || !phone) return;
+      tracking = false;
+      if (locked !== "h") {
+        locked = null;
+        return;
+      }
+
+      const t = e.changedTouches[0];
+      const dx = t.clientX - startX;
+      const dt = Math.max(16, performance.now() - startT);
+      const velocity = Math.abs(dx) / dt; // px/ms
+
+      // Very sensitive: short flick OR small distance
+      const flicked = velocity > 0.35;
+      const dragged = Math.abs(dx) > 18;
+
+      if (flicked || dragged) {
+        cycle(dx < 0 ? "right" : "left");
+      }
+
+      locked = null;
+    };
+
+    container.addEventListener("touchstart", onTouchStart, { passive: true });
+    container.addEventListener("touchmove", onTouchMove, { passive: false });
+    container.addEventListener("touchend", onTouchEnd, { passive: true });
+    container.addEventListener("touchcancel", () => {
+      tracking = false;
+      locked = null;
+    });
 
     const onResize = () => {
       if (!isAnimating.current) updateHoverLayout(activeSlot);
@@ -441,17 +379,36 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
     return () => {
       enterHandlers.forEach(({ el, handler }) => el.removeEventListener("pointerenter", handler));
       container.removeEventListener("pointerleave", onMouseLeave);
+      container.removeEventListener("touchstart", onTouchStart);
+      container.removeEventListener("touchmove", onTouchMove);
+      container.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("resize", onResize);
       if (leaveTimer) clearTimeout(leaveTimer);
     };
-  }, [centerIndex, totalCards, getVisibleMap, needsPagination]);
+  }, [centerIndex, totalCards, getVisibleMap, needsPagination, cycle]);
+
+  if (!totalCards) return null;
+
+  const chevron = (direction: "left" | "right") => (
+    <svg
+      className="relative z-[2] h-4 w-4 md:h-5 md:w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points={direction === "left" ? "15 18 9 12 15 6" : "9 18 15 12 9 6"} />
+    </svg>
+  );
 
   return (
     <section className="relative z-20 flex w-full flex-col items-center px-4 py-4 md:px-8 lg:py-8">
       <div className="flex w-full max-w-[90rem] items-center justify-center">
         <div
           ref={containerRef}
-          className="fan-layout relative flex w-full max-w-[80rem] items-center justify-center"
+          className="fan-layout relative flex w-full max-w-[80rem] items-center justify-center touch-pan-y"
         >
           {cards.map((card, index) => {
             const image = (
@@ -472,6 +429,11 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
                 target={card.linkUrl.startsWith("http") ? "_blank" : "_self"}
                 rel="noopener noreferrer"
                 className="fan-card block cursor-pointer"
+                onClick={(e) => {
+                  if (isPhoneViewport() && needsPagination) {
+                    e.preventDefault();
+                  }
+                }}
               >
                 {image}
               </a>
@@ -492,14 +454,16 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
             onClick={() => cycle("left")}
             aria-label="Previous"
           >
-            <Chevron direction="left" />
+            {chevron("left")}
           </button>
           <div className="flex items-center gap-2">
             {cards.map((_, i) => (
               <span
                 key={i}
                 className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                  i === centerIndex ? "scale-[1.3] bg-black/70" : "bg-black/15"
+                  i === centerIndex
+                    ? "scale-[1.3] bg-black/70 dark:bg-white/80"
+                    : "bg-black/15 dark:bg-white/15"
                 }`}
               />
             ))}
@@ -510,20 +474,10 @@ function DesktopFanCarousel({ cards }: SocialCardsProps) {
             onClick={() => cycle("right")}
             aria-label="Next"
           >
-            <Chevron direction="right" />
+            {chevron("right")}
           </button>
         </div>
       )}
     </section>
   );
-}
-
-export default function SocialCards({ cards }: SocialCardsProps) {
-  const isMobile = useIsMobileCarousel();
-
-  if (!cards.length) return null;
-
-  // Phones: native snap scroll (smooth). Desktop: fan hover carousel.
-  if (isMobile) return <MobileSnapCarousel cards={cards} />;
-  return <DesktopFanCarousel cards={cards} />;
 }
