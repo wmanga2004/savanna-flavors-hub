@@ -144,6 +144,27 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+#lovable-badge,
+[id="lovable-badge"],
+a[aria-label="Edit with Lovable"],
+a[aria-label*="Edit with Lovable"],
+div[id*="lovable-badge"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+`,
+          }}
+        />
       </head>
       <body>
         {children}
