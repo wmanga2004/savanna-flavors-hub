@@ -1,4 +1,21 @@
 import { Link } from "@tanstack/react-router";
+import { Instagram, ShoppingBag } from "lucide-react";
+
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden
+      className={className}
+    >
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .56.04.82.12v-3.57a6.37 6.37 0 0 0-.82-.05A6.34 6.34 0 0 0 3.15 15.2a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.73a8.19 8.19 0 0 0 4.76 1.52V6.79a4.85 4.85 0 0 1-1-.1z" />
+    </svg>
+  );
+}
+
+const iconLinkClass =
+  "inline-flex h-10 w-10 items-center justify-center rounded-full border border-background/20 text-background/75 transition-colors hover:border-primary hover:text-primary";
 
 export function Footer() {
   return (
@@ -54,25 +71,27 @@ export function Footer() {
             </Link>
             <p>&copy; {new Date().getFullYear()} Leavora African Market. All rights reserved.</p>
           </div>
-          <div className="flex flex-wrap gap-6">
-            <Link to="/products" className="transition-colors hover:text-primary">
-              Shop
+          <div className="flex items-center gap-3">
+            <Link to="/products" aria-label="Shop" className={iconLinkClass}>
+              <ShoppingBag className="h-5 w-5" />
             </Link>
             <a
               href="https://www.instagram.com/leovoraafricanmarket_okc"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-primary"
+              aria-label="Instagram"
+              className={iconLinkClass}
             >
-              Instagram
+              <Instagram className="h-5 w-5" />
             </a>
             <a
               href="https://www.tiktok.com/@leavora.african.m"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-primary"
+              aria-label="TikTok"
+              className={iconLinkClass}
             >
-              TikTok
+              <TikTokIcon className="h-5 w-5" />
             </a>
           </div>
         </div>
