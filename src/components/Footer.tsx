@@ -67,7 +67,7 @@ export function Footer() {
               Facebook
             </a>
             <a
-              href="https://tiktok.com/@leavora_okc"
+              href="https://www.tiktok.com/@leavora.african.m"
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-primary"
