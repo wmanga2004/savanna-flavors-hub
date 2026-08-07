@@ -50,8 +50,10 @@ function getHeightMultiplier(width: number) {
   return available / idealPx;
 }
 
-function getSlotConfig(totalCards: number, slot: number) {
-  if (totalCards >= MAX_VISIBLE) return FAN_POSITIONS[slot];
+type SlotConfig = { rot: number; scale: number; x: number; y: number; zIndex: number };
+
+function getSlotConfig(totalCards: number, slot: number): SlotConfig {
+  if (totalCards >= MAX_VISIBLE) return FAN_POSITIONS[slot] as SlotConfig;
   const center = totalCards >> 1;
   const distance = totalCards > 1 ? (slot - center) / center : 0;
   const absDistance = Math.abs(distance);
