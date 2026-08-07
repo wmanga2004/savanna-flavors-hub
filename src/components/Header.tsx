@@ -23,7 +23,7 @@ export function Header() {
           <img
             src="/images/logo-mark.png"
             alt="Leavora"
-            className="h-12 w-auto object-contain md:h-14"
+            className="h-14 w-auto object-contain md:h-16"
           />
           <span className="flex flex-col leading-none">
             <span className="font-display text-xl font-medium tracking-tight text-foreground md:text-2xl">
