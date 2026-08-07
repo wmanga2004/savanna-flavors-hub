@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { SQUARE_SHOP_URL } from "@/lib/products";
 
 export function Footer() {
   return (
@@ -59,14 +58,6 @@ export function Footer() {
             <Link to="/products" className="transition-colors hover:text-primary">
               Shop
             </Link>
-            <a
-              href={SQUARE_SHOP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-primary"
-            >
-              Order Online
-            </a>
             <a
               href="https://facebook.com/leavoraafricanmarket_"
               target="_blank"

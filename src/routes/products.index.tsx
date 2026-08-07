@@ -2,13 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { z } from "zod";
 import { ProductCard } from "@/components/ProductCard";
-import {
-  products,
-  getAllCategories,
-  SQUARE_SHOP_URL,
-  CATEGORIES,
-} from "@/lib/products";
-import { Button } from "@/components/ui/button";
+import { fetchProducts, getAllCategories, CATEGORIES } from "@/lib/products";
 import { cn } from "@/lib/utils";
 
 const productsSearchSchema = z.object({
@@ -17,6 +11,10 @@ const productsSearchSchema = z.object({
 
 export const Route = createFileRoute("/products/")({
   validateSearch: productsSearchSchema,
+  loader: async () => {
+    const products = await fetchProducts();
+    return { products };
+  },
   head: () => ({
     meta: [
       { title: "Shop — Leavora African Market" },
@@ -40,15 +38,16 @@ export const Route = createFileRoute("/products/")({
 });
 
 function ProductsPage() {
+  const { products } = Route.useLoaderData();
   const { category } = Route.useSearch();
-  const categories = getAllCategories();
+  const categories = getAllCategories(products);
 
   const filtered = useMemo(() => {
     if (!category || !CATEGORIES.includes(category as (typeof CATEGORIES)[number])) {
       return products;
     }
     return products.filter((p) => p.category === category);
-  }, [category]);
+  }, [category, products]);
 
   return (
     <div>
@@ -66,13 +65,8 @@ function ProductsPage() {
           </h1>
           <p className="mt-4 max-w-xl text-background/75">
             Produce, spices, grains, oils, frozen foods, and specialty drinks — stocked for the
-            diaspora kitchen.
+            diaspora kitchen. Add to cart and checkout securely.
           </p>
-          <a href={SQUARE_SHOP_URL} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block">
-            <Button className="bg-primary text-espresso hover:bg-gold-deep hover:text-background">
-              Order Online on Square
-            </Button>
-          </a>
         </div>
       </section>
 

@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { SQUARE_SHOP_URL } from "@/lib/products";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -103,9 +102,9 @@ function AboutPage() {
               </p>
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={SQUARE_SHOP_URL} target="_blank" rel="noopener noreferrer">
-                <Button size="lg">Order Online</Button>
-              </a>
+              <Link to="/products">
+                <Button size="lg">Shop Online</Button>
+              </Link>
               <Link to="/products">
                 <Button size="lg" variant="outline">
                   Browse Shop

@@ -4,9 +4,16 @@ import { Button } from "@/components/ui/button";
 import SocialCards from "@/components/ui/card-fan-carousel";
 import { ProductCard } from "@/components/ProductCard";
 import { HeroMarket } from "@/components/HeroMarket";
-import { products, CATEGORIES } from "@/lib/products";
+import { fetchProducts, CATEGORIES } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const products = await fetchProducts();
+    const featuredProducts = products.filter((p) =>
+      ["egusi-seeds", "ola-ola-pounded-yam-10lb", "njangsang", "malta"].includes(p.slug),
+    );
+    return { products, featuredProducts };
+  },
   head: () => ({
     meta: [
       { title: "Leavora African Market | Authentic Groceries & Community Market" },
@@ -28,10 +35,6 @@ export const Route = createFileRoute("/")({
   }),
   component: HomePage,
 });
-
-const featuredProducts = products.filter((p) =>
-  ["egusi-seeds", "ola-ola-pounded-yam-10lb", "njangsang", "malta"].includes(p.slug),
-);
 
 const galleryCards = [
   {
@@ -96,6 +99,8 @@ const departmentBlurb: Record<string, string> = {
 };
 
 function HomePage() {
+  const { featuredProducts } = Route.useLoaderData();
+
   return (
     <div className="flex flex-col">
       <HeroMarket />

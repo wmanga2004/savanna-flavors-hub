@@ -3,7 +3,6 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { Button } from "@/components/ui/button";
-import { SQUARE_SHOP_URL } from "@/lib/products";
 
 const DUST_COUNT = 18;
 
@@ -245,14 +244,14 @@ export function HeroMarket() {
               Explore the Market <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
-          <a href={SQUARE_SHOP_URL} target="_blank" rel="noopener noreferrer">
+          <Link to="/products">
             <Button
               size="lg"
               className="gap-2 bg-primary text-espresso hover:bg-gold-deep hover:text-background"
             >
-              Order Online <ArrowRight className="h-4 w-4" />
+              Shop Online <ArrowRight className="h-4 w-4" />
             </Button>
-          </a>
+          </Link>
         </div>
 
         <div

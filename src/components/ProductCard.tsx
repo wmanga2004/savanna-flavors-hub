@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ShoppingBag, ExternalLink } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/components/cart-context";
 import { formatPrice, type Product } from "@/lib/products";
@@ -42,7 +42,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <span className="ml-1 text-sm font-normal text-muted-foreground">/ {product.unit}</span>
         </p>
       </div>
-      <div className="flex gap-2 p-4 pt-0">
+      <div className="p-4 pt-0">
         <Button
           onClick={() =>
             addItem({
@@ -54,19 +54,12 @@ export function ProductCard({ product }: ProductCardProps) {
               unit: product.unit,
             })
           }
-          className="flex-1 gap-2"
+          className="w-full gap-2"
           size="sm"
         >
           <ShoppingBag className="h-4 w-4" />
-          Add
+          Add to Cart
         </Button>
-        {product.squareUrl && (
-          <Button asChild variant="outline" size="sm" className="px-3">
-            <a href={product.squareUrl} target="_blank" rel="noopener noreferrer" aria-label="Order on Square">
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          </Button>
-        )}
       </div>
     </article>
   );

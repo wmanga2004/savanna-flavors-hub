@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useCart } from "@/components/cart-context";
 import { CartDrawer } from "@/components/CartDrawer";
-import { SQUARE_SHOP_URL } from "@/lib/products";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -47,14 +46,12 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <a
-            href={SQUARE_SHOP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/products"
             className="rounded-sm bg-primary px-3.5 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-gold-deep hover:text-background"
           >
-            Order Online
-          </a>
+            Shop Online
+          </Link>
         </nav>
 
         <div className="flex items-center gap-1">
@@ -87,15 +84,6 @@ export function Header() {
                     {link.label}
                   </Link>
                 ))}
-                <a
-                  href={SQUARE_SHOP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setMobileOpen(false)}
-                  className="font-display text-2xl font-medium text-primary"
-                >
-                  Order Online
-                </a>
               </div>
             </SheetContent>
           </Sheet>

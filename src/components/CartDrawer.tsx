@@ -1,4 +1,5 @@
-import { ShoppingBag, Minus, Plus, Trash2, X } from "lucide-react";
+import { ShoppingBag, Minus, Plus, Trash2, Loader2 } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -10,14 +11,39 @@ import {
   SheetFooter,
   SheetClose,
 } from "@/components/ui/sheet";
-import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/components/cart-context";
 import { formatPrice } from "@/lib/products";
+import { createSquareCheckout } from "@/lib/checkout";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 export function CartDrawer({ children }: { children: React.ReactNode }) {
   const { items, removeItem, updateQuantity, subtotal, itemCount, clearCart } = useCart();
+  const [checkingOut, setCheckingOut] = useState(false);
+
+  const handleCheckout = async () => {
+    if (!items.length || checkingOut) return;
+    setCheckingOut(true);
+    try {
+      const result = await createSquareCheckout({
+        data: {
+          items: items.map((item) => ({
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            productId: item.productId,
+          })),
+        },
+      });
+      clearCart();
+      window.location.href = result.checkoutUrl;
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Checkout failed. Please try again.";
+      toast.error(message);
+      setCheckingOut(false);
+    }
+  };
 
   return (
     <Sheet>
@@ -26,7 +52,9 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
         <SheetHeader className="space-y-2.5">
           <SheetTitle className="font-display text-xl">Your Cart</SheetTitle>
           <SheetDescription>
-            {itemCount === 0 ? "Your cart is empty." : `${itemCount} item${itemCount === 1 ? "" : "s"} in your cart.`}
+            {itemCount === 0
+              ? "Your cart is empty."
+              : `${itemCount} item${itemCount === 1 ? "" : "s"} in your cart.`}
           </SheetDescription>
         </SheetHeader>
 
@@ -35,7 +63,9 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
             <div className="rounded-full bg-muted p-4">
               <ShoppingBag className="h-8 w-8 text-muted-foreground" />
             </div>
-            <p className="text-muted-foreground">Add some delicious African flavors to get started.</p>
+            <p className="text-muted-foreground">
+              Add some market staples to get started.
+            </p>
             <SheetClose asChild>
               <Link to="/products">
                 <Button>Browse Products</Button>
@@ -95,17 +125,22 @@ export function CartDrawer({ children }: { children: React.ReactNode }) {
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-display text-xl font-semibold">{formatPrice(subtotal)}</span>
               </div>
-              <p className="text-xs text-muted-foreground">Shipping and taxes calculated at checkout.</p>
+              <p className="text-xs text-muted-foreground">
+                You&apos;ll complete payment securely with Square. Shipping address is collected at
+                checkout.
+              </p>
               <SheetFooter className="flex-col gap-2 sm:flex-col">
-                <Button
-                  className="w-full"
-                  onClick={() => {
-                    toast.success("Checkout coming soon!");
-                  }}
-                >
-                  Checkout
+                <Button className="w-full gap-2" onClick={handleCheckout} disabled={checkingOut}>
+                  {checkingOut ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Redirecting…
+                    </>
+                  ) : (
+                    "Checkout with Square"
+                  )}
                 </Button>
-                <Button variant="outline" className="w-full" onClick={clearCart}>
+                <Button variant="outline" className="w-full" onClick={clearCart} disabled={checkingOut}>
                   Clear Cart
                 </Button>
               </SheetFooter>

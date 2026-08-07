@@ -1,21 +1,24 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { Minus, Plus, ShoppingBag, ExternalLink, MapPin, Package } from "lucide-react";
+import { Minus, Plus, ShoppingBag, MapPin, Package } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ProductCard } from "@/components/ProductCard";
 import { useCart } from "@/components/cart-context";
-import { products, getProductBySlug, formatPrice } from "@/lib/products";
+import { fetchProductBySlug, fetchProducts, formatPrice } from "@/lib/products";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/products/$slug")({
-  loader: ({ params }) => {
-    const product = getProductBySlug(params.slug);
+  loader: async ({ params }) => {
+    const [product, allProducts] = await Promise.all([
+      fetchProductBySlug(params.slug),
+      fetchProducts(),
+    ]);
     if (!product) {
       throw notFound();
     }
-    return { product };
+    return { product, allProducts };
   },
   head: ({ loaderData }) => ({
     meta: loaderData
@@ -40,11 +43,11 @@ export const Route = createFileRoute("/products/$slug")({
 });
 
 function ProductDetailPage() {
-  const { product } = Route.useLoaderData();
+  const { product, allProducts } = Route.useLoaderData();
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 
-  const relatedProducts = products
+  const relatedProducts = allProducts
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 3);
 
@@ -138,14 +141,6 @@ function ProductDetailPage() {
               <ShoppingBag className="h-5 w-5" />
               Add to Cart
             </Button>
-            {product.squareUrl && (
-              <Button asChild variant="outline" size="lg" className="gap-2">
-                <a href={product.squareUrl} target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="h-4 w-4" />
-                  Order on Square
-                </a>
-              </Button>
-            )}
           </div>
 
           <div className="grid gap-4 border border-border/50 bg-card p-4 sm:grid-cols-2">
@@ -155,7 +150,7 @@ function ProductDetailPage() {
             </div>
             <div className="flex items-center gap-3">
               <Package className="h-5 w-5 text-primary" />
-              <span className="text-sm text-muted-foreground">Pickup or online order</span>
+              <span className="text-sm text-muted-foreground">Secure Square checkout</span>
             </div>
           </div>
         </div>
