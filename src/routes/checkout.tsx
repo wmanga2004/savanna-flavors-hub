@@ -270,7 +270,9 @@ function CheckoutPage() {
                 </p>
               ) : cardError ? (
                 <p className="rounded-md border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
-                  {cardError}
+                  {/https|secure context/i.test(cardError)
+                    ? "Card payments need a secure page. Use http://localhost:5173 for local testing (not 127.0.0.1), or the published https:// site."
+                    : cardError}
                 </p>
               ) : (
                 <div
