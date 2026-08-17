@@ -53,37 +53,8 @@ function buildOrderSummary(
   items: CheckoutItem[],
   shipping: Shipping,
   amountCents: number,
-  paymentId: string,
 ) {
-  const lines = items.map(
-    (item) =>
-      `• ${item.quantity}× ${item.name} — $${(item.price * item.quantity).toFixed(2)}`,
-  );
-  const address = [
-    shipping.name,
-    shipping.line1,
-    shipping.line2,
-    [shipping.city, shipping.state, shipping.postalCode].filter(Boolean).join(", "),
-    shipping.email,
-    shipping.phone,
-  ]
-    .filter(Boolean)
-    .join("\n");
-
   return {
-    subject: `New Leavora order — ${formatMoney(amountCents)}`,
-    text: [
-      "New paid order on leavoramarket.com",
-      "",
-      `Total: ${formatMoney(amountCents)}`,
-      `Payment ID: ${paymentId}`,
-      "",
-      "Items:",
-      ...lines,
-      "",
-      "Customer / shipping:",
-      address || "(not provided)",
-    ].join("\n"),
     sms: `Leavora order ${formatMoney(amountCents)}: ${items
       .map((i) => `${i.quantity}x ${i.name}`)
       .join(", ")}. ${shipping.name || "Customer"} ${shipping.phone || ""} ${shipping.email || ""}`
@@ -91,44 +62,6 @@ function buildOrderSummary(
       .trim()
       .slice(0, 320),
   };
-}
-
-async function notifySellerEmail(
-  subject: string,
-  text: string,
-): Promise<NotifyResult> {
-  const apiKey = env("RESEND_API_KEY");
-  const to = env("SELLER_EMAIL") || "leavoraafricanmarket@gmail.com";
-  const from =
-    env("SELLER_EMAIL_FROM") || "Leavora Orders <onboarding@resend.dev>";
-
-  if (!apiKey) {
-    console.warn("RESEND_API_KEY not set — skipping seller email.");
-    return { sent: false, reason: "missing_resend_key", to };
-  }
-
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      subject,
-      text,
-    }),
-  });
-
-  if (!response.ok) {
-    const detail = await response.text();
-    console.error("Seller email failed:", detail);
-    return { sent: false, reason: detail.slice(0, 300), to };
-  }
-
-  console.log("Seller email sent to", to);
-  return { sent: true, to };
 }
 
 async function notifySellerSms(body: string): Promise<NotifyResult> {
@@ -322,21 +255,15 @@ Deno.serve(async (req: Request) => {
     }
 
     const paymentId = payload.payment.id;
-    const summary = buildOrderSummary(items, shipping, amountCents, paymentId);
+    const summary = buildOrderSummary(items, shipping, amountCents);
 
-    // Never fail the sale if notify fails
-    const [emailResult, smsResult] = await Promise.all([
-      notifySellerEmail(summary.subject, summary.text).catch((err) => ({
-        sent: false,
-        reason: err instanceof Error ? err.message : "email_error",
-      })),
-      notifySellerSms(summary.sms).catch((err) => ({
-        sent: false,
-        reason: err instanceof Error ? err.message : "sms_error",
-      })),
-    ]);
+    // Never fail the sale if SMS notify fails
+    const smsResult = await notifySellerSms(summary.sms).catch((err) => ({
+      sent: false,
+      reason: err instanceof Error ? err.message : "sms_error",
+    }));
 
-    console.log("sellerNotify", JSON.stringify({ email: emailResult, sms: smsResult }));
+    console.log("sellerNotify", JSON.stringify({ sms: smsResult }));
 
     return new Response(
       JSON.stringify({
@@ -344,7 +271,6 @@ Deno.serve(async (req: Request) => {
         status: payload.payment.status ?? "COMPLETED",
         receiptUrl: payload.payment.receipt_url ?? null,
         sellerNotify: {
-          email: emailResult,
           sms: smsResult,
         },
       }),

@@ -10,7 +10,7 @@ export type CheckoutItem = {
 export type CheckoutShipping = {
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
   line1: string;
   line2?: string;
   city: string;
@@ -52,7 +52,6 @@ export async function processCardPayment(input: {
         receiptUrl?: string | null;
         error?: string;
         sellerNotify?: {
-          email?: { sent?: boolean; reason?: string; to?: string };
           sms?: { sent?: boolean; reason?: string; to?: string };
         };
       }

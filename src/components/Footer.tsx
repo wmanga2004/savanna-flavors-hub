@@ -76,7 +76,7 @@ export function Footer() {
               <ShoppingBag className="h-5 w-5" />
             </Link>
             <a
-              href="https://www.instagram.com/leovoraafricanmarket_okc"
+              href="https://www.instagram.com/leavoraafricanmarket_okc"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"

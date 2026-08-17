@@ -16,7 +16,6 @@ export const Route = createFileRoute("/checkout/success")({
 });
 
 type NotifyState = {
-  email?: { sent?: boolean; reason?: string; to?: string };
   sms?: { sent?: boolean; reason?: string; to?: string };
 } | null;
 
@@ -36,7 +35,6 @@ function CheckoutSuccessPage() {
   }, []);
 
   const smsFailed = notify && notify.sms?.sent === false;
-  const emailFailed = notify && notify.email?.sent === false;
 
   return (
     <div className="container mx-auto flex min-h-[60vh] flex-col items-center justify-center px-4 py-16 text-center">
@@ -49,19 +47,12 @@ function CheckoutSuccessPage() {
         need anything else.
       </p>
 
-      {(smsFailed || emailFailed) && (
+      {smsFailed && (
         <div className="mt-6 max-w-lg rounded-md border border-amber-500/40 bg-amber-500/10 p-4 text-left text-sm text-foreground">
           <p className="font-medium">Store alert note (payment still succeeded)</p>
-          {smsFailed && (
-            <p className="mt-2 text-muted-foreground">
-              SMS: {notify?.sms?.reason || "not sent"}
-            </p>
-          )}
-          {emailFailed && (
-            <p className="mt-1 text-muted-foreground">
-              Email: {notify?.email?.reason || "not sent"}
-            </p>
-          )}
+          <p className="mt-2 text-muted-foreground">
+            SMS: {notify?.sms?.reason || "not sent"}
+          </p>
         </div>
       )}
 

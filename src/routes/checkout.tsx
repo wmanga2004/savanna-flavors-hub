@@ -23,6 +23,144 @@ export const Route = createFileRoute("/checkout")({
   component: CheckoutPage,
 });
 
+type ShippingFields = {
+  name: string;
+  email: string;
+  phone: string;
+  line1: string;
+  line2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+};
+
+type FieldErrors = Partial<Record<keyof ShippingFields, string>>;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+const US_ZIP_RE = /^\d{5}(-\d{4})?$/;
+
+const US_STATES = [
+  { code: "AL", name: "Alabama" },
+  { code: "AK", name: "Alaska" },
+  { code: "AZ", name: "Arizona" },
+  { code: "AR", name: "Arkansas" },
+  { code: "CA", name: "California" },
+  { code: "CO", name: "Colorado" },
+  { code: "CT", name: "Connecticut" },
+  { code: "DE", name: "Delaware" },
+  { code: "DC", name: "District of Columbia" },
+  { code: "FL", name: "Florida" },
+  { code: "GA", name: "Georgia" },
+  { code: "HI", name: "Hawaii" },
+  { code: "ID", name: "Idaho" },
+  { code: "IL", name: "Illinois" },
+  { code: "IN", name: "Indiana" },
+  { code: "IA", name: "Iowa" },
+  { code: "KS", name: "Kansas" },
+  { code: "KY", name: "Kentucky" },
+  { code: "LA", name: "Louisiana" },
+  { code: "ME", name: "Maine" },
+  { code: "MD", name: "Maryland" },
+  { code: "MA", name: "Massachusetts" },
+  { code: "MI", name: "Michigan" },
+  { code: "MN", name: "Minnesota" },
+  { code: "MS", name: "Mississippi" },
+  { code: "MO", name: "Missouri" },
+  { code: "MT", name: "Montana" },
+  { code: "NE", name: "Nebraska" },
+  { code: "NV", name: "Nevada" },
+  { code: "NH", name: "New Hampshire" },
+  { code: "NJ", name: "New Jersey" },
+  { code: "NM", name: "New Mexico" },
+  { code: "NY", name: "New York" },
+  { code: "NC", name: "North Carolina" },
+  { code: "ND", name: "North Dakota" },
+  { code: "OH", name: "Ohio" },
+  { code: "OK", name: "Oklahoma" },
+  { code: "OR", name: "Oregon" },
+  { code: "PA", name: "Pennsylvania" },
+  { code: "RI", name: "Rhode Island" },
+  { code: "SC", name: "South Carolina" },
+  { code: "SD", name: "South Dakota" },
+  { code: "TN", name: "Tennessee" },
+  { code: "TX", name: "Texas" },
+  { code: "UT", name: "Utah" },
+  { code: "VT", name: "Vermont" },
+  { code: "VA", name: "Virginia" },
+  { code: "WA", name: "Washington" },
+  { code: "WV", name: "West Virginia" },
+  { code: "WI", name: "Wisconsin" },
+  { code: "WY", name: "Wyoming" },
+] as const;
+
+const US_STATE_CODES = new Set(US_STATES.map((s) => s.code));
+
+function phoneDigits(phone: string) {
+  return phone.replace(/\D/g, "");
+}
+
+function isValidUsPhone(phone: string) {
+  const digits = phoneDigits(phone);
+  if (digits.length === 10) return true;
+  if (digits.length === 11 && digits.startsWith("1")) return true;
+  return false;
+}
+
+function formatPhoneDisplay(phone: string) {
+  const digits = phoneDigits(phone);
+  const local = digits.length === 11 && digits.startsWith("1") ? digits.slice(1) : digits;
+  if (local.length !== 10) return phone.trim();
+  return `(${local.slice(0, 3)}) ${local.slice(3, 6)}-${local.slice(6)}`;
+}
+
+function validateShipping(shipping: ShippingFields): FieldErrors {
+  const errors: FieldErrors = {};
+  const name = shipping.name.trim();
+  const email = shipping.email.trim();
+  const phone = shipping.phone.trim();
+  const line1 = shipping.line1.trim();
+  const city = shipping.city.trim();
+  const state = shipping.state.trim().toUpperCase();
+  const postalCode = shipping.postalCode.trim();
+
+  if (!name || name.length < 2) {
+    errors.name = "Enter your full name.";
+  }
+  if (!email) {
+    errors.email = "Email is required.";
+  } else if (!EMAIL_RE.test(email)) {
+    errors.email = "Enter a valid email (example: name@email.com).";
+  }
+  if (!phone) {
+    errors.phone = "Phone number is required.";
+  } else if (!isValidUsPhone(phone)) {
+    errors.phone = "Enter a valid 10-digit US phone (example: (405) 476-2965).";
+  }
+  if (!line1 || line1.length < 3) {
+    errors.line1 = "Enter a street address.";
+  }
+  if (!city || city.length < 2) {
+    errors.city = "Enter a city.";
+  }
+  if (!state) {
+    errors.state = "Select a state.";
+  } else if (!US_STATE_CODES.has(state)) {
+    errors.state = "Select a valid US state.";
+  }
+  if (!postalCode) {
+    errors.postalCode = "ZIP code is required.";
+  } else if (!US_ZIP_RE.test(postalCode)) {
+    errors.postalCode = "Enter a valid ZIP (example: 73170 or 73170-1234).";
+  }
+
+  return errors;
+}
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <p className="text-sm text-destructive">{message}</p>;
+}
+
 function CheckoutPage() {
   const { items, subtotal, clearCart, itemCount } = useCart();
   const navigate = useNavigate();
@@ -44,7 +182,8 @@ function CheckoutPage() {
   const [cardReady, setCardReady] = useState(false);
   const [cardError, setCardError] = useState<string | null>(null);
   const [paying, setPaying] = useState(false);
-  const [shipping, setShipping] = useState({
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [shipping, setShipping] = useState<ShippingFields>({
     name: "",
     email: "",
     phone: "",
@@ -56,6 +195,16 @@ function CheckoutPage() {
   });
 
   const square = getSquareConfig();
+
+  const updateField = (key: keyof ShippingFields, value: string) => {
+    setShipping((s) => ({ ...s, [key]: value }));
+    setFieldErrors((prev) => {
+      if (!prev[key]) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (!items.length || !square.configured) return;
@@ -100,6 +249,23 @@ function CheckoutPage() {
     event.preventDefault();
     if (!items.length || !cardRef.current || paying) return;
 
+    const errors = validateShipping(shipping);
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      const first = Object.values(errors)[0];
+      toast.error(first || "Please fix the highlighted fields.");
+      return;
+    }
+
+    const name = shipping.name.trim();
+    const email = shipping.email.trim();
+    const phone = formatPhoneDisplay(shipping.phone);
+    const line1 = shipping.line1.trim();
+    const line2 = shipping.line2.trim();
+    const city = shipping.city.trim();
+    const state = shipping.state.trim().toUpperCase();
+    const postalCode = shipping.postalCode.trim();
+
     setPaying(true);
     try {
       const tokenResult = await cardRef.current.tokenize({
@@ -109,14 +275,14 @@ function CheckoutPage() {
         customerInitiated: true,
         sellerKeyedIn: false,
         billingContact: {
-          givenName: shipping.name.split(" ")[0] || shipping.name,
-          familyName: shipping.name.split(" ").slice(1).join(" ") || undefined,
-          email: shipping.email,
-          phone: shipping.phone || undefined,
-          addressLines: [shipping.line1, shipping.line2].filter(Boolean),
-          city: shipping.city,
-          state: shipping.state,
-          postalCode: shipping.postalCode,
+          givenName: name.split(" ")[0] || name,
+          familyName: name.split(" ").slice(1).join(" ") || undefined,
+          email,
+          phone,
+          addressLines: [line1, line2].filter(Boolean),
+          city,
+          state,
+          postalCode,
           countryCode: "US",
         },
       });
@@ -137,21 +303,20 @@ function CheckoutPage() {
           productId: item.productId,
         })),
         shipping: {
-          name: shipping.name.trim(),
-          email: shipping.email.trim(),
-          ...(shipping.phone.trim() ? { phone: shipping.phone.trim() } : {}),
-          line1: shipping.line1.trim(),
-          ...(shipping.line2.trim() ? { line2: shipping.line2.trim() } : {}),
-          city: shipping.city.trim(),
-          state: shipping.state.trim(),
-          postalCode: shipping.postalCode.trim(),
+          name,
+          email,
+          phone,
+          line1,
+          ...(line2 ? { line2 } : {}),
+          city,
+          state,
+          postalCode,
         },
       });
 
       clearCart();
       toast.success("Payment successful — your card was charged.");
 
-      const emailOk = payment.sellerNotify?.email?.sent;
       const smsOk = payment.sellerNotify?.sms?.sent;
       try {
         sessionStorage.setItem(
@@ -161,15 +326,9 @@ function CheckoutPage() {
       } catch {
         // ignore
       }
-      if (!emailOk || !smsOk) {
-        const bits = [
-          !emailOk
-            ? `Email: ${payment.sellerNotify?.email?.reason || "not sent"}`
-            : null,
-          !smsOk ? `SMS: ${payment.sellerNotify?.sms?.reason || "not sent"}` : null,
-        ].filter(Boolean);
-        toast.message("Seller alerts did not send", {
-          description: bits.join(" · "),
+      if (!smsOk) {
+        toast.message("Seller SMS did not send", {
+          description: payment.sellerNotify?.sms?.reason || "not sent",
           duration: 12000,
         });
       }
@@ -217,74 +376,129 @@ function CheckoutPage() {
                   <Label htmlFor="name">Full name</Label>
                   <Input
                     id="name"
+                    name="name"
+                    autoComplete="name"
                     required
+                    aria-invalid={Boolean(fieldErrors.name)}
                     value={shipping.name}
-                    onChange={(e) => setShipping((s) => ({ ...s, name: e.target.value }))}
+                    onChange={(e) => updateField("name", e.target.value)}
                   />
+                  <FieldError message={fieldErrors.name} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
+                    inputMode="email"
+                    autoComplete="email"
+                    placeholder="name@email.com"
                     required
+                    aria-invalid={Boolean(fieldErrors.email)}
                     value={shipping.email}
-                    onChange={(e) => setShipping((s) => ({ ...s, email: e.target.value }))}
+                    onChange={(e) => updateField("email", e.target.value)}
                   />
+                  <FieldError message={fieldErrors.email} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone</Label>
                   <Input
                     id="phone"
+                    name="phone"
                     type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    placeholder="(405) 476-2965"
+                    required
+                    aria-invalid={Boolean(fieldErrors.phone)}
                     value={shipping.phone}
-                    onChange={(e) => setShipping((s) => ({ ...s, phone: e.target.value }))}
+                    onChange={(e) => updateField("phone", e.target.value)}
+                    onBlur={() => {
+                      if (isValidUsPhone(shipping.phone)) {
+                        updateField("phone", formatPhoneDisplay(shipping.phone));
+                      }
+                    }}
                   />
+                  <FieldError message={fieldErrors.phone} />
                 </div>
                 <div className="space-y-2 sm:col-span-2">
                   <Label htmlFor="line1">Address</Label>
                   <Input
                     id="line1"
+                    name="line1"
+                    autoComplete="address-line1"
                     required
+                    aria-invalid={Boolean(fieldErrors.line1)}
                     value={shipping.line1}
-                    onChange={(e) => setShipping((s) => ({ ...s, line1: e.target.value }))}
+                    onChange={(e) => updateField("line1", e.target.value)}
                   />
+                  <FieldError message={fieldErrors.line1} />
                 </div>
                 <div className="space-y-2 sm:col-span-2">
                   <Label htmlFor="line2">Apartment, suite, etc. (optional)</Label>
                   <Input
                     id="line2"
+                    name="line2"
+                    autoComplete="address-line2"
                     value={shipping.line2}
-                    onChange={(e) => setShipping((s) => ({ ...s, line2: e.target.value }))}
+                    onChange={(e) => updateField("line2", e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="city">City</Label>
                   <Input
                     id="city"
+                    name="city"
+                    autoComplete="address-level2"
                     required
+                    aria-invalid={Boolean(fieldErrors.city)}
                     value={shipping.city}
-                    onChange={(e) => setShipping((s) => ({ ...s, city: e.target.value }))}
+                    onChange={(e) => updateField("city", e.target.value)}
                   />
+                  <FieldError message={fieldErrors.city} />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="state">State</Label>
-                    <Input
+                    <select
                       id="state"
+                      name="state"
+                      autoComplete="address-level1"
                       required
+                      aria-invalid={Boolean(fieldErrors.state)}
                       value={shipping.state}
-                      onChange={(e) => setShipping((s) => ({ ...s, state: e.target.value }))}
-                    />
+                      onChange={(e) => updateField("state", e.target.value)}
+                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                    >
+                      <option value="">Select state</option>
+                      {US_STATES.map((s) => (
+                        <option key={s.code} value={s.code}>
+                          {s.name} ({s.code})
+                        </option>
+                      ))}
+                    </select>
+                    <FieldError message={fieldErrors.state} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="postalCode">ZIP</Label>
                     <Input
                       id="postalCode"
+                      name="postalCode"
+                      inputMode="numeric"
+                      autoComplete="postal-code"
+                      placeholder="73170"
                       required
+                      aria-invalid={Boolean(fieldErrors.postalCode)}
                       value={shipping.postalCode}
-                      onChange={(e) => setShipping((s) => ({ ...s, postalCode: e.target.value }))}
+                      onChange={(e) =>
+                        updateField(
+                          "postalCode",
+                          e.target.value.replace(/[^\d-]/g, "").slice(0, 10),
+                        )
+                      }
                     />
+                    <FieldError message={fieldErrors.postalCode} />
                   </div>
                 </div>
               </div>
