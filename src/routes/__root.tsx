@@ -178,16 +178,18 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isAdmin = pathname.startsWith("/admin");
+  const isChess = pathname.startsWith("/chess");
+  const showStoreChrome = !isAdmin && !isChess;
 
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>
         <div className="flex min-h-screen flex-col">
-          {!isAdmin && <Header />}
+          {showStoreChrome && <Header />}
           <main className="flex-1">
             <Outlet />
           </main>
-          {!isAdmin && <Footer />}
+          {showStoreChrome && <Footer />}
         </div>
         <Toaster position="bottom-right" richColors />
         <HideLovableBadge />
