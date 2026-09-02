@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as ChessRouteImport } from './routes/chess'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminIdRouteImport } from './routes/admin.$id'
@@ -40,6 +41,11 @@ const AdminRoute = AdminRouteImport.update({
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChessRoute = ChessRouteImport.update({
+  id: '/chess',
+  path: '/chess',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/checkout': typeof CheckoutRouteWithChildren
+  '/chess': typeof ChessRoute
   '/products': typeof ProductsRouteWithChildren
   '/admin/$id': typeof AdminIdRoute
   '/admin/login': typeof AdminLoginRoute
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/checkout': typeof CheckoutRouteWithChildren
+  '/chess': typeof ChessRoute
   '/admin/$id': typeof AdminIdRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/new': typeof AdminNewRoute
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/checkout': typeof CheckoutRouteWithChildren
+  '/chess': typeof ChessRoute
   '/products': typeof ProductsRouteWithChildren
   '/admin/$id': typeof AdminIdRoute
   '/admin/login': typeof AdminLoginRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/checkout'
+    | '/chess'
     | '/products'
     | '/admin/$id'
     | '/admin/login'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/checkout'
+    | '/chess'
     | '/admin/$id'
     | '/admin/login'
     | '/admin/new'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/checkout'
+    | '/chess'
     | '/products'
     | '/admin/$id'
     | '/admin/login'
@@ -172,6 +184,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   CheckoutRoute: typeof CheckoutRouteWithChildren
+  ChessRoute: typeof ChessRoute
   ProductsRoute: typeof ProductsRouteWithChildren
 }
 
@@ -203,6 +216,13 @@ declare module '@tanstack/react-router' {
       path: '/checkout'
       fullPath: '/checkout'
       preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chess': {
+      id: '/chess'
+      path: '/chess'
+      fullPath: '/chess'
+      preLoaderRoute: typeof ChessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -311,6 +331,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   CheckoutRoute: CheckoutRouteWithChildren,
+  ChessRoute: ChessRoute,
   ProductsRoute: ProductsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
