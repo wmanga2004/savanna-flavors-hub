@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ethics Quiz Pamphlet — MCQs, Answers &amp; Explanations</title>
+  <style>
+    :root {
+      --ink: #1a1f1c;
+      --muted: #4a554e;
+      --line: #c8d0c9;
+      --paper: #f7f5f0;
+      --band: #1f4d3a;
+      --band-soft: #e6efe9;
+      --accent: #b45309;
+      --correct: #14532d;
+      --correct-bg: #ecfdf3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at top left, #e8efe9 0%, transparent 45%),
+        radial-gradient(ellipse at bottom right, #f0e6d8 0%, transparent 40%),
+        var(--paper);
+      line-height: 1.45;
+    }
+
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+
+    header.cover {
+      border-bottom: 3px solid var(--band);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .eyebrow {
+      font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      color: var(--band);
+      margin: 0 0 0.6rem;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      line-height: 1.1;
+      margin: 0 0 0.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .lede {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 38rem;
+      margin: 0;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      margin-top: 1.25rem;
+      font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .meta span {
+      border-left: 3px solid var(--accent);
+      padding-left: 0.6rem;
+    }
+
+    nav.toc {
+      background: var(--band-soft);
+      padding: 1rem 1.15rem;
+      margin-bottom: 2.25rem;
+      border-left: 4px solid var(--band);
+    }
+
+    nav.toc h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--band);
+    }
+
+    nav.toc ol {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    nav.toc a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    nav.toc a:hover { border-bottom-color: var(--band); }
+
+    section {
+      margin-bottom: 2.75rem;
+    }
+
+    h2.section-title {
+      font-size: 1.55rem;
+      margin: 0 0 0.35rem;
+      color: var(--band);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+    }
+
+    .section-note {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin: 0 0 1.25rem;
+    }
+
+    article.q {
+      margin-bottom: 1.35rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px dashed var(--line);
+    }
+
+    article.q:last-child { border-bottom: 0; }
+
+    .q-num {
+      font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .prompt {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 0 0 0.65rem;
+    }
+
+    .choices {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 0.85rem;
+    }
+
+    .choices li {
+      padding: 0.2rem 0 0.2rem 0.1rem;
+      font-size: 0.98rem;
+    }
+
+    .choices .key {
+      font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+      font-weight: 700;
+      color: var(--band);
+      margin-right: 0.35rem;
+    }
+
+    .answer-box {
+      background: var(--correct-bg);
+      border: 1px solid #bbf7d0;
+      padding: 0.75rem 0.9rem;
+      border-radius: 2px;
+    }
+
+    .answer-box .label {
+      font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--correct);
+      margin: 0 0 0.3rem;
+    }
+
+    .answer-box .ans {
+      font-weight: 700;
+      margin: 0 0 0.35rem;
+      color: var(--correct);
+    }
+
+    .answer-box .why {
+      margin: 0;
+      color: var(--ink);
+      font-size: 0.95rem;
+    }
+
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      padding: 0.65rem 0;
+      margin-bottom: 1rem;
+      background: color-mix(in srgb, var(--paper) 92%, transparent);
+      backdrop-filter: blur(6px);
+      font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+    }
+
+    button {
+      border: 1px solid var(--band);
+      background: white;
+      color: var(--band);
+      padding: 0.45rem 0.8rem;
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button.primary {
+      background: var(--band);
+      color: white;
+    }
+
+    body.hide-answers .answer-box { display: none; }
+
+    footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 2px solid var(--band);
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+    }
+
+    @media print {
+      .controls { display: none; }
+      body {
+        background: white;
+      }
+      .wrap { padding: 0.5in; max-width: none; }
+      article.q { break-inside: avoid; }
+      a { text-decoration: none; color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="controls">
+      <button class="primary" type="button" onclick="document.body.classList.toggle('hide-answers')">Toggle answers</button>
+      <button type="button" onclick="window.print()">Print / Save PDF</button>
+    </div>
+
+    <header class="cover">
+      <p class="eyebrow">Computer Ethics · Study Pamphlet</p>
+      <h1>Ethics Quiz Pamphlet</h1>
+      <p class="lede">Multiple-choice questions with answers and short explanations drawn from the Internet / censorship slides (ethic2.1) and Intellectual Property slides (ethic2.2), plus the Part B items you recalled from class.</p>
+      <div class="meta">
+        <span>Part A style: direct from slides</span>
+        <span>Part B style: application / trickier</span>
+        <span>Use Toggle answers to self-test</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#part-b">Part B — Trickier / application questions</a></li>
+        <li><a href="#net">Internet, spam, mobile apps &amp; censorship</a></li>
+        <li><a href="#ip">Intellectual property, Locke &amp; fair use</a></li>
+        <li><a href="#cases">Case studies (Ann, Kate, Rajiv)</a></li>
+        <li><a href="#software">Software protection &amp; open source</a></li>
+      </ol>
+    </nav>
+
+    <!-- PART B -->
+    <section id="part-b">
+      <h2 class="section-title">Part B — Trickier / application questions</h2>
+      <p class="section-note">These match the kinds of questions you remembered. Answers follow the lecture framing.</p>
+
+      <article class="q">
+        <div class="q-num">B1</div>
+        <p class="prompt">Cyberbullying happens because people use:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Internet</li>
+          <li><span class="key">B.</span> Cell phones</li>
+          <li><span class="key">C.</span> Television / radio</li>
+          <li><span class="key">D.</span> A &amp; B are correct</li>
+          <li><span class="key">E.</span> All are correct</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">D. A &amp; B are correct</p>
+          <p class="why">Cyberbullying is harassment delivered through digital personal-communication tools — mainly the internet and cell phones. Television and radio are one-to-many broadcast media, not the usual channels for peer cyberbullying, so C (and therefore E) is wrong.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">B2</div>
+        <p class="prompt">Who is associated with <em>The Second Treatise of Government</em>?</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> John Stuart Mill</li>
+          <li><span class="key">B.</span> Immanuel Kant</li>
+          <li><span class="key">C.</span> John Locke</li>
+          <li><span class="key">D.</span> Jeremy Bentham</li>
+          <li><span class="key">E.</span> Thomas Hobbes</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">C. John Locke</p>
+          <p class="why">The IP slides state: John Locke (1632–1704), <em>The Second Treatise of Government</em>. He argued people have rights to property in their person, their labor, and things removed from Nature through labor (with limits). Mill is linked to the harm principle / anti-censorship; Kant to the Categorical Imperative.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">B3</div>
+        <p class="prompt">The limitation of a small screen / awkward browsing on cell phones is mainly a problem that led to the rise of:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Spam filters</li>
+          <li><span class="key">B.</span> Mobile apps</li>
+          <li><span class="key">C.</span> Creative Commons</li>
+          <li><span class="key">D.</span> Trade secrets</li>
+          <li><span class="key">E.</span> Botnets</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Mobile apps</p>
+          <p class="why">Slides: people spend more time on smartphones/tablets; using Web browsers is awkward on mobile devices; <strong>mobile apps replace Web browsers</strong> as the way to access the Internet on mobile devices. Small frame size is a usability limit of the mobile Web, not of spam, IP licensing, or botnets.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">B4</div>
+        <p class="prompt">Which of the following best describes a site where people can trade goods or find work / services online?</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Wikipedia</li>
+          <li><span class="key">B.</span> Twitter</li>
+          <li><span class="key">C.</span> Craigslist</li>
+          <li><span class="key">D.</span> Linux</li>
+          <li><span class="key">E.</span> Flickr Creative Commons gallery</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">C. Craigslist</p>
+          <p class="why">Under “How We Use the Internet,” the slides highlight buying and selling. Craigslist is the classic classifieds marketplace for goods, housing, and work/gigs. Wikipedia is contributing content; Twitter is socializing/promotion; Linux is open-source software; Flickr CC is photo licensing/reuse.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">B5</div>
+        <p class="prompt">According to John Locke’s property argument (as applied in the slides), people have a natural right to things they:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Find abandoned on the Web</li>
+          <li><span class="key">B.</span> Remove from Nature through their own labor</li>
+          <li><span class="key">C.</span> Download after copyright expires</li>
+          <li><span class="key">D.</span> Copy under fair use for commercial sale</li>
+          <li><span class="key">E.</span> Patent as software algorithms only</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Remove from Nature through their own labor</p>
+          <p class="why">Locke: rights to property in one’s person, one’s labor, and things removed from Nature through labor — provided you don’t take more than you can use and enough is left for others. The slides then ask whether that extends cleanly to intellectual property (analogy is imperfect).</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- INTERNET / CENSORSHIP -->
+    <section id="net">
+      <h2 class="section-title">Internet, spam, mobile apps &amp; censorship</h2>
+      <p class="section-note">Mostly Part A style — straight from ethic2.1.</p>
+
+      <article class="q">
+        <div class="q-num">1</div>
+        <p class="prompt">Spam is best defined as:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Any work email</li>
+          <li><span class="key">B.</span> Unsolicited, bulk email</li>
+          <li><span class="key">C.</span> Encrypted email</li>
+          <li><span class="key">D.</span> Email with attachments</li>
+          <li><span class="key">E.</span> Newsletter you opted into</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Unsolicited, bulk email</p>
+          <p class="why">Slide definition: Spam = unsolicited, bulk email. Opt-in newsletters are solicited, so they are not spam under this definition.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">2</div>
+        <p class="prompt">Why is spam profitable?</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> It is illegal everywhere, raising prices</li>
+          <li><span class="key">B.</span> It costs about the same as paper junk mail</li>
+          <li><span class="key">C.</span> Sending ads by email is extremely cheap compared with postal junk mail</li>
+          <li><span class="key">D.</span> Recipients must pay to open spam</li>
+          <li><span class="key">E.</span> Governments subsidize spam</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">C. Sending ads by email is extremely cheap compared with postal junk mail</p>
+          <p class="why">Slides: about $10 to email a million addresses; more than 30,000× cheaper than junk mail. Low cost + huge volume = profit incentive.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">3</div>
+        <p class="prompt">Most spam is sent by:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Individual hobbyists typing one email at a time</li>
+          <li><span class="key">B.</span> Bot herders who control botnets (networks of compromised computers)</li>
+          <li><span class="key">C.</span> The U.S. Postal Service</li>
+          <li><span class="key">D.</span> Creative Commons</li>
+          <li><span class="key">E.</span> Patent trolls</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Bot herders who control botnets</p>
+          <p class="why">Slides: most spam is sent by bot herders controlling huge networks of compromised computers (botnets).</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">4</div>
+        <p class="prompt">Two important attributes of the World Wide Web are that it is:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Centralized and anonymous only</li>
+          <li><span class="key">B.</span> Decentralized, and every Web object has a unique address (URL)</li>
+          <li><span class="key">C.</span> Owned by one company and password-protected</li>
+          <li><span class="key">D.</span> Offline-first and print-only</li>
+          <li><span class="key">E.</span> Limited to government sites</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Decentralized, and every Web object has a unique address (URL)</p>
+          <p class="why">Direct from slides: Web is a networked hypertext system; two important attributes = decentralized + unique URL for every object.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">5</div>
+        <p class="prompt">Censorship is:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Always identical to copyright</li>
+          <li><span class="key">B.</span> An attempt to suppress or regulate public access to material considered harmful or offensive</li>
+          <li><span class="key">C.</span> Only done by private citizens</li>
+          <li><span class="key">D.</span> The same as fair use</li>
+          <li><span class="key">E.</span> Required by the 1st Amendment</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Attempt to suppress or regulate public access to material considered harmful or offensive</p>
+          <p class="why">Slide definition. Traditionally exercised by governments and religious institutions.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">6</div>
+        <p class="prompt">Which is an example of <em>direct</em> censorship?</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> A magazine decides not to publish to avoid angering officials</li>
+          <li><span class="key">B.</span> Movie ratings advising audiences</li>
+          <li><span class="key">C.</span> Government monopolization of all media outlets</li>
+          <li><span class="key">D.</span> A blogger choosing kinder wording</li>
+          <li><span class="key">E.</span> Fair use of a thumbnail image</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">C. Government monopolization of all media outlets</p>
+          <p class="why">Direct censorship forms listed: government monopolization, prepublication review, licensing/registration. A and B are closer to self-censorship / ratings systems.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">7</div>
+        <p class="prompt">The most common form of censorship is:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Government monopolization</li>
+          <li><span class="key">B.</span> Prepublication review</li>
+          <li><span class="key">C.</span> Self-censorship</li>
+          <li><span class="key">D.</span> Licensing of radio only</li>
+          <li><span class="key">E.</span> Blocking all URLs worldwide</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">C. Self-censorship</p>
+          <p class="why">Slides say self-censorship is the most common form: a group decides not to publish, often to avoid persecution or keep good relations with officials.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">8</div>
+        <p class="prompt">Which challenge makes Internet censorship especially hard?</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> There is only one Web site</li>
+          <li><span class="key">B.</span> Many-to-many communications, dynamic connections, huge number of sites, global reach</li>
+          <li><span class="key">C.</span> The Internet has no URLs</li>
+          <li><span class="key">D.</span> Minors and adults are always easy to distinguish online</li>
+          <li><span class="key">E.</span> All traffic is offline</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Many-to-many, dynamic, huge, global</p>
+          <p class="why">Slides list those challenges and also note it is hard to distinguish minors from adults online.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">9</div>
+        <p class="prompt">John Stuart Mill’s Principle of Harm says power may be exercised over a person against their will only:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> To improve their moral character</li>
+          <li><span class="key">B.</span> To prevent harm to others</li>
+          <li><span class="key">C.</span> To protect intellectual property forever</li>
+          <li><span class="key">D.</span> To enforce religious doctrine</li>
+          <li><span class="key">E.</span> Whenever spam volume rises</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. To prevent harm to others</p>
+          <p class="why">Quoted on slides: one’s own good, physical or moral, is not sufficient warrant. Mill also opposed censorship because no one is infallible and truth emerges from clash of ideas.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">10</div>
+        <p class="prompt">Freedom of expression in the U.S. is protected primarily by:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> The 2nd Amendment</li>
+          <li><span class="key">B.</span> The 1st Amendment</li>
+          <li><span class="key">C.</span> The Audio Home Recording Act</li>
+          <li><span class="key">D.</span> Creative Commons only</li>
+          <li><span class="key">E.</span> Patent law</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. The 1st Amendment</p>
+          <p class="why">Slides quote the 1st Amendment: Congress shall make no law abridging freedom of speech or of the press. It is not absolute — balanced against public good.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">11</div>
+        <p class="prompt">M-PESA (Kenya) is an example of text messaging / mobile tech used to:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Replace all universities</li>
+          <li><span class="key">B.</span> Save money, pay bills, transfer funds, share crop prices, fight counterfeit medicine</li>
+          <li><span class="key">C.</span> Enforce software patents</li>
+          <li><span class="key">D.</span> Host Creative Commons photos</li>
+          <li><span class="key">E.</span> Run botnets</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Financial and practical uses listed in the slides</p>
+          <p class="why">Under “Text Messaging / Transforming Lives in Developing Countries,” M-PESA enables saving, paying bills, transferring funds, crop-price info, and anti-counterfeit medicine protection.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- IP -->
+    <section id="ip">
+      <h2 class="section-title">Intellectual property, Locke &amp; fair use</h2>
+      <p class="section-note">From ethic2.2 — strong Part A material; also supports Part B Locke questions.</p>
+
+      <article class="q">
+        <div class="q-num">12</div>
+        <p class="prompt">Intellectual property refers to:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Land and buildings only</li>
+          <li><span class="key">B.</span> Creations of the mind (inventions, literary/artistic works, symbols/names/images used in commerce)</li>
+          <li><span class="key">C.</span> Only physical products in a warehouse</li>
+          <li><span class="key">D.</span> Electricity and water rights</li>
+          <li><span class="key">E.</span> Spam filters</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Creations of the mind…</p>
+          <p class="why">WIPO-style definition on slides. Important: IP ≠ the physical object that manifests it.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">13</div>
+        <p class="prompt">A trade secret is:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> A public patent document</li>
+          <li><span class="key">B.</span> A confidential piece of IP that gives a company a competitive advantage</li>
+          <li><span class="key">C.</span> Always illegal reverse engineering</li>
+          <li><span class="key">D.</span> A Creative Commons license</li>
+          <li><span class="key">E.</span> A trademark slogan only</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Confidential IP giving competitive advantage</p>
+          <p class="why">Examples: formulas, processes, designs, plans, customer lists. Reverse engineering is allowed; secrets may leak when employees leave.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">14</div>
+        <p class="prompt">A trademark identifies _____; a service mark identifies _____.</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> services; goods</li>
+          <li><span class="key">B.</span> goods; services</li>
+          <li><span class="key">C.</span> patents; copyrights</li>
+          <li><span class="key">D.</span> spam; botnets</li>
+          <li><span class="key">E.</span> source code; binaries only</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. goods; services</p>
+          <p class="why">Trademark = word/symbol/etc. identifying goods (Big Mac, iPhone). Service mark identifies services (Nike’s “Just Do It,” McDonald’s arches as brand identity examples on slides).</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">15</div>
+        <p class="prompt">A U.S. patent typically gives the owner exclusive rights for about:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> 5 years</li>
+          <li><span class="key">B.</span> 14 days</li>
+          <li><span class="key">C.</span> 20 years</li>
+          <li><span class="key">D.</span> Forever with no limits</li>
+          <li><span class="key">E.</span> Until the inventor dies only</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">C. 20 years</p>
+          <p class="why">Slides: patent is a public document describing the invention; owner can prevent others from making/using/selling it for 20 years. Society later benefits when works enter the public domain.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">16</div>
+        <p class="prompt">Copyright’s five principal rights include all EXCEPT:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Reproduction</li>
+          <li><span class="key">B.</span> Distribution</li>
+          <li><span class="key">C.</span> Public display / performance</li>
+          <li><span class="key">D.</span> Production of derivative works</li>
+          <li><span class="key">E.</span> Permanent monopoly over mathematical truths</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">E. Permanent monopoly over mathematical truths</p>
+          <p class="why">The five rights listed: reproduction, distribution, public display, public performance, derivative works. Copyright is limited in time/scope; it does not own “math truths.”</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">17</div>
+        <p class="prompt">Courts judging fair use consider four factors. Which is one of them?</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> The author’s favorite color</li>
+          <li><span class="key">B.</span> Purpose/character of use, nature of work, amount copied, effect on the market</li>
+          <li><span class="key">C.</span> Whether the copier owns a smartphone</li>
+          <li><span class="key">D.</span> Whether spam filters blocked the file</li>
+          <li><span class="key">E.</span> Whether Locke wrote the work</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. The four fair-use factors</p>
+          <p class="why">Listed exactly on slides. Fair use = sometimes legal to reproduce copyrighted work without permission under those circumstances.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">18</div>
+        <p class="prompt">In <em>Sony v. Universal</em>, the Supreme Court held that time shifting TV with a VCR is:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Always criminal</li>
+          <li><span class="key">B.</span> Fair use</li>
+          <li><span class="key">C.</span> A patent violation</li>
+          <li><span class="key">D.</span> Trademark infringement</li>
+          <li><span class="key">E.</span> Only legal for commercials</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Fair use</p>
+          <p class="why">Time shifting = recording to watch later privately. Using taped material for a commercial purpose is not fair use.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">19</div>
+        <p class="prompt">Space shifting (e.g., Rio MP3 player case) means:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Selling copies to strangers online</li>
+          <li><span class="key">B.</span> Creating a copy for backup or use on a portable device (generally treated as fair use)</li>
+          <li><span class="key">C.</span> Moving a data center to another country to avoid all law</li>
+          <li><span class="key">D.</span> Broadcasting radio without a license</li>
+          <li><span class="key">E.</span> Changing a trademark color</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Backup / portable-device copy as fair use</p>
+          <p class="why"><em>RIAA v. Diamond Multimedia</em>: space shifting consistent with copyright law. Making a copy for a friend is not fair use.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">20</div>
+        <p class="prompt">In <em>Kelly v. Arriba Soft</em>, thumbnail images in a search engine were:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Ruled never transformative</li>
+          <li><span class="key">B.</span> Affirmed as significantly transformative and fair use</li>
+          <li><span class="key">C.</span> Ruled to be patents</li>
+          <li><span class="key">D.</span> Banned worldwide</li>
+          <li><span class="key">E.</span> Treated as trade secrets</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Significantly transformative and fair use</p>
+          <p class="why">9th Circuit affirmed Arriba Soft’s thumbnails were fair use; later used as precedent in Authors Guild v. Google.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">21</div>
+        <p class="prompt">Why does society limit IP protection instead of making it permanent?</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Creators never want incentives</li>
+          <li><span class="key">B.</span> Society benefits most when inventions eventually enter the public domain; limited rights balance incentive and public benefit</li>
+          <li><span class="key">C.</span> Patents are free and instant</li>
+          <li><span class="key">D.</span> Locke banned all property</li>
+          <li><span class="key">E.</span> Spam filters require it</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Balance incentive vs. public domain</p>
+          <p class="why">Slides: rights stimulate creativity, but society benefits when works enter public domain; Congress struck a time-limited compromise. Prices fall when works become public domain.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- CASES -->
+    <section id="cases">
+      <h2 class="section-title">Case studies (Ann, Kate, Rajiv)</h2>
+      <p class="section-note">Application questions — common Part B / exam style.</p>
+
+      <article class="q">
+        <div class="q-num">22</div>
+        <p class="prompt">Ann emails all 50 coworkers about Girl Scout cookies. Under rule utilitarianism, her action is judged:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Right, because one person sold cookies</li>
+          <li><span class="key">B.</span> Wrong, because if everyone solicited donations by email, morale would fall and causes would do poorly</li>
+          <li><span class="key">C.</span> Irrelevant to ethics</li>
+          <li><span class="key">D.</span> Required by Locke</li>
+          <li><span class="key">E.</span> A patent issue</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Wrong under rule utilitarianism</p>
+          <p class="why">Ask: what if everyone did this? Grumbling, lower morale, weaker results → harms &gt; benefits. (Act utilitarianism in the slide’s numbers said benefits exceeded harms; theories disagree.)</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">23</div>
+        <p class="prompt">A less controversial approach for Ann would be to:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Spam the whole Internet</li>
+          <li><span class="key">B.</span> Post a sign-up sheet and email only interested people (opt-in)</li>
+          <li><span class="key">C.</span> Hide her identity</li>
+          <li><span class="key">D.</span> Sell a fraudulent product</li>
+          <li><span class="key">E.</span> Force coworkers to buy</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Opt-in via sign-up sheet</p>
+          <p class="why">Summary slide: identify interested people first; avoid grumbling and lost productivity; also involve her daughter.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">24</div>
+        <p class="prompt">Kate posts Jerry’s party photo without permission. Kantian analysis says this is wrong because:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> It increased Jerry’s popularity</li>
+          <li><span class="key">B.</span> She treated Jerry merely as a means to grow her blog’s readership</li>
+          <li><span class="key">C.</span> Utilitarianism always forbids blogging</li>
+          <li><span class="key">D.</span> Photos cannot be copyrighted</li>
+          <li><span class="key">E.</span> The 1st Amendment bans blogs</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Treated him merely as a means</p>
+          <p class="why">2nd formulation of the Categorical Imperative: respect autonomy; don’t use people only as means. Four of five analyses said she was wrong; she should have asked consent.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">25</div>
+        <p class="prompt">For Rajiv (database optimizations from a former employer), which option do Kantianism, social contract theory, and virtue ethics prefer?</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Personally ask leading questions so the team rediscovers his old secrets</li>
+          <li><span class="key">B.</span> Clean-room strategy: public info + performance targets, no disclosing confidential optimizations</li>
+          <li><span class="key">C.</span> Publish the old employer’s source code</li>
+          <li><span class="key">D.</span> Sell the trade secret on Craigslist</li>
+          <li><span class="key">E.</span> Ignore all agreements</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Clean-room strategy</p>
+          <p class="why">Clean room doesn’t violate the confidentiality agreement and can be universalized; personally leading the team risks disclosing proprietary info (breaking a promise). Act utilitarianism’s dollar analysis preferred personal involvement, but a risk-averse view still favors clean room.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- SOFTWARE / OSS -->
+    <section id="software">
+      <h2 class="section-title">Software protection &amp; open source</h2>
+      <p class="section-note">High-yield Part A facts; good for “which is true” items.</p>
+
+      <article class="q">
+        <div class="q-num">26</div>
+        <p class="prompt">Software copyright protects:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> The abstract idea only, not the expression</li>
+          <li><span class="key">B.</span> Expression/implementation (e.g., executable, screen displays), not the idea itself</li>
+          <li><span class="key">C.</span> Only the company’s building</li>
+          <li><span class="key">D.</span> Any mathematical algorithm forever</li>
+          <li><span class="key">E.</span> User passwords exclusively</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Expression/implementation, not the idea</p>
+          <p class="why">Slides: expression is copyrighted; companies often keep source as a trade secret. Object/executable programs are copyrightable (<em>Apple v. Franklin</em>).</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">27</div>
+        <p class="prompt">Compared with software copyrights, software patents are generally:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Cheaper and faster to obtain; reverse engineering always allowed</li>
+          <li><span class="key">B.</span> More expensive and time-consuming; reverse engineering not allowed</li>
+          <li><span class="key">C.</span> Identical in every way</li>
+          <li><span class="key">D.</span> Illegal in all countries</li>
+          <li><span class="key">E.</span> Only for fonts</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. More expensive/time-consuming; reverse engineering not allowed</p>
+          <p class="why">From the comparison table: copyright protects executable/screens; patent protects a software process with practical utility. Reverse engineering: yes for copyright, no for patent.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">28</div>
+        <p class="prompt">“Patent trolls” in the slides are described as:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Open-source maintainers</li>
+          <li><span class="key">B.</span> Companies that buy patents and enforce rights, often expecting settlement rather than trial</li>
+          <li><span class="key">C.</span> Spam filter vendors</li>
+          <li><span class="key">D.</span> Fair-use librarians</li>
+          <li><span class="key">E.</span> Girl Scout troops</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Patent-holding companies enforcing patents for settlement leverage</p>
+          <p class="why">Also called patent-holding companies; example pressure: RIM paid $612 million after not settling quickly.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">29</div>
+        <p class="prompt">Which is a feature of open-source software (per the open-source definition on slides)?</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Source code must be secret forever</li>
+          <li><span class="key">B.</span> No one may modify the code</li>
+          <li><span class="key">C.</span> Source included; others may modify/redistribute; same rights apply to redistributions (copyleft-style sharing of rights)</li>
+          <li><span class="key">D.</span> Only the government may use it</li>
+          <li><span class="key">E.</span> It cannot be given away</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">C. Source included; modification/redistribution allowed; rights travel with redistributions</p>
+          <p class="why">Also: no restrictions preventing selling/giving away; no restrictions on how people use software. Examples: Apache, Linux, Firefox, Android, etc.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">30</div>
+        <p class="prompt">Creative Commons licenses are meant to:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Replace the need for any copyright law overnight</li>
+          <li><span class="key">B.</span> Streamline creative reuse by stating which copying is OK and which rights are retained</li>
+          <li><span class="key">C.</span> Make all software patented</li>
+          <li><span class="key">D.</span> Ban Flickr</li>
+          <li><span class="key">E.</span> Legalize spam</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Clarify allowed copying / retained rights</p>
+          <p class="why">Works are copyrighted when created; contacting owners slows reuse. CC labels permissions. Flickr has hundreds of millions of CC-licensed photos (per slides).</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">31</div>
+        <p class="prompt">Richard Stallman began the GNU Project in 1984 to:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> Build a proprietary Windows clone for sale only</li>
+          <li><span class="key">B.</span> Develop an open-source, Unix-like operating system</li>
+          <li><span class="key">C.</span> Create the first botnet</li>
+          <li><span class="key">D.</span> Patent Amazon’s 1-Click</li>
+          <li><span class="key">E.</span> Run Acme’s payroll</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Open-source Unix-like OS</p>
+          <p class="why">Linus Torvalds wrote a Unix-like kernel in 1991; combined with GNU components → commonly called Linux.</p>
+        </div>
+      </article>
+
+      <article class="q">
+        <div class="q-num">32</div>
+        <p class="prompt">Safe software development against unconscious copying uses a “clean room” where:</p>
+        <ul class="choices">
+          <li><span class="key">A.</span> One team copies source line-by-line in secret</li>
+          <li><span class="key">B.</span> Team 1 analyzes a competitor’s program and writes a spec; Team 2 builds from the spec only</li>
+          <li><span class="key">C.</span> Everyone shares trade secrets freely</li>
+          <li><span class="key">D.</span> Patents are ignored</li>
+          <li><span class="key">E.</span> Reverse engineering is banned in all cases</li>
+        </ul>
+        <div class="answer-box">
+          <p class="label">Answer</p>
+          <p class="ans">B. Spec team vs. implementation team separation</p>
+          <p class="why">Reverse engineering can be okay; clean room protects against unconscious copying of protected expression.</p>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <p><strong>How to use:</strong> Hit “Toggle answers,” quiz yourself, then reveal. Print to PDF if you want a paper copy.</p>
+      <p>Sources: your uploaded lecture PDFs (ethic2.1 — spam/Internet/censorship; ethic2.2 — intellectual property) plus the Part B items you remembered from the quiz.</p>
+      <p>File location in repo: <code>study/ethics-quiz-pamphlet.html</code></p>
+    </footer>
+  </div>
+</body>
+</html>
